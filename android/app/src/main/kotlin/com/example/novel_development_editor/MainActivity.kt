@@ -1,4 +1,4 @@
-package com.example.novel_development_editor
+package com.example.narrative_development_environment
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -27,7 +27,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
-  if (!window.Create(L"novel_development_editor", origin, size)) {
+  if (!window.Create(L"narrative_development_environment", origin, size)) {
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);

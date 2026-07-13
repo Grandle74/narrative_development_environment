@@ -7,9 +7,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:novel_development_editor/data/database.dart';
+import 'package:narrative_development_environment/data/database.dart';
 
-import 'package:novel_development_editor/main.dart';
+import 'package:narrative_development_environment/main.dart';
 
 class _FakeAppDatabase extends Fake implements AppDatabase {}
 

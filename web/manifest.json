@@ -1,6 +1,6 @@
 {
-    "name": "novel_development_editor",
-    "short_name": "novel_development_editor",
+    "name": "narrative_development_environment",
+    "short_name": "narrative_development_environment",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
