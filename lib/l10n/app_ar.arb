@@ -1,0 +1,10 @@
+{
+  "@@locale": "ar",
+  "appTitle": "بيئة تطوير السرد",
+  "charactersTitle": "الشخصيات",
+  "addCharacter": "إضافة شخصية",
+  "nameLabel": "الاسم",
+  "save": "حفظ",
+  "noCharactersYet": "لا توجد شخصيات بعد. اضغط + للإضافة.",
+  "unnamedCharacter": "بدون اسم"
+}

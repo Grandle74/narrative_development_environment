@@ -1,0 +1,10 @@
+{
+  "@@locale": "en",
+  "appTitle": "Narrative Development Environment",
+  "charactersTitle": "Characters",
+  "addCharacter": "Add Character",
+  "nameLabel": "Name",
+  "save": "Save",
+  "noCharactersYet": "No characters yet. Tap + to add one.",
+  "unnamedCharacter": "Unnamed"
+}
