@@ -43,7 +43,7 @@ class NdeApp extends StatelessWidget {
             Locale('ar'),
           ],
           theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
+          darkTheme: AppTheme.dark(themeController.darkVariant),
           themeMode: themeController.mode,
           home: CharacterListScreen(database: database, themeController: themeController),
         );

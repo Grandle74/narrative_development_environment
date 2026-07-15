@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../l10n/generated/app_localizations.dart';
+import '../../theme/app_theme.dart';
 import '../../theme/theme_controller.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -40,6 +41,26 @@ class SettingsScreen extends StatelessWidget {
                 value: ThemeMode.dark,
                 groupValue: themeController.mode,
                 onChanged: (m) => themeController.setMode(m!),
+              ),
+              const Divider(height: 24),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+                child: Text(
+                  l10n.darkBackgroundTitle,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+              RadioListTile<DarkVariant>(
+                title: Text(l10n.darkVariantGray),
+                value: DarkVariant.gray,
+                groupValue: themeController.darkVariant,
+                onChanged: (v) => themeController.setDarkVariant(v!),
+              ),
+              RadioListTile<DarkVariant>(
+                title: Text(l10n.darkVariantOled),
+                value: DarkVariant.oled,
+                groupValue: themeController.darkVariant,
+                onChanged: (v) => themeController.setDarkVariant(v!),
               ),
             ],
           );

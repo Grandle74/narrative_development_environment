@@ -4,7 +4,9 @@ import '../../data/attribute_labels.dart';
 import '../../data/database.dart';
 import '../../data/enum_options.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../widgets/app_dialog_button.dart';
 import '../../widgets/inputs/attribute_fields.dart';
+import '../../widgets/lockable_field.dart';
 
 /// Section display order. Matches AttributeDefinition.layer values.
 const List<String> _sectionOrder = [
@@ -21,7 +23,7 @@ const List<String> _sectionOrder = [
 /// falls to the end of its section instead of erroring.
 const List<String> _fieldOrder = [
   'name', 'alias', 'species', 'birth',
-  'status', 'current_location', 'current_arc', 'role', 'affiliation',
+  'status', 'location', 'arc', 'role', 'affiliation',
   'production_status', 'narrative_function', 'first_appearance',
   'core_belief', 'core_desire', 'core_fear', 'core_conflict',
   'decision_process', 'never_does', 'never_says', 'never_admits',
@@ -48,6 +50,9 @@ class CharacterDetailScreen extends StatefulWidget {
 class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   late Future<_FormData> _future;
   final Map<String, String> _edits = {};
+  // Fields explicitly unlocked for this session only. Cleared on every
+  // save/reload — unlocking is deliberate and temporary, not permanent.
+  final Set<String> _unlockedFields = {};
   bool _saving = false;
 
   @override
@@ -98,9 +103,40 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
     setState(() {
       _saving = false;
       _edits.clear();
+      _unlockedFields.clear();
       _future = _load();
     });
     messenger.showSnackBar(SnackBar(content: Text(savedLabel)));
+  }
+
+  Future<void> _confirmUnlock(String attrKey) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.unlockFieldTitle),
+        content: Text(l10n.unlockFieldBody),
+        actionsPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        actions: [
+          AppDialogButtonRow(
+            buttons: [
+              AppDialogButton(
+                label: MaterialLocalizations.of(dialogContext).cancelButtonLabel,
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+              ),
+              AppDialogButton(
+                label: l10n.unlockConfirm,
+                primary: true,
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      setState(() => _unlockedFields.add(attrKey));
+    }
   }
 
   @override
@@ -175,28 +211,24 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   Widget _buildField(AppLocalizations l10n, _FormData data, AttributeDefinition def) {
     final currentFact = data.current[def.attrKey];
     final currentValue = _edits[def.attrKey] ?? currentFact?.value;
-    // `mutable == false` marks set-once identity facts (name, birth,
-    // first_appearance, ...). Once a value exists, the field locks;
-    // an empty one can still be filled in.
-    final enabled = def.mutable || currentFact == null;
+    final unlocked = _unlockedFields.contains(def.attrKey);
+    final locked = !def.mutable && currentFact != null && !unlocked;
+    final enabled = def.mutable || currentFact == null || unlocked;
 
-    return AttributeField(
-      label: attributeLabel(l10n, def.attrKey),
-      valueType: def.valueType,
-      initialValue: currentValue,
-      enabled: enabled,
-      multiline: !_shortTextFields.contains(def.attrKey),
-      options: EnumOptions.optionsFor(def.attrKey),
-      optionLabel: (v) => enumOptionLabel(l10n, def.attrKey, v),
-      onChanged: (value) {
-        setState(() {
-          _edits[def.attrKey] = value;
-        });
-        if (def.attrKey == 'name') {
-          // Persist display name immediately so lists update without pressing Save.
-          widget.database.renameEntity(widget.entityId, value);
-        }
-      },
+    return LockableField(
+      locked: locked,
+      tooltip: l10n.unlock,
+      onUnlock: () => _confirmUnlock(def.attrKey),
+      child: AttributeField(
+        label: attributeLabel(l10n, def.attrKey),
+        valueType: def.valueType,
+        initialValue: currentValue,
+        enabled: enabled,
+        multiline: !_shortTextFields.contains(def.attrKey),
+        options: EnumOptions.optionsFor(def.attrKey),
+        optionLabel: (v) => enumOptionLabel(l10n, def.attrKey, v),
+        onChanged: (value) => _edits[def.attrKey] = value,
+      ),
     );
   }
 }

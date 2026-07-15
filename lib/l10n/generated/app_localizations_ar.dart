@@ -51,6 +51,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get themeDark => 'داكن';
 
   @override
+  String get darkBackgroundTitle => 'خلفية الوضع الداكن';
+
+  @override
+  String get darkVariantGray => 'رمادي داكن';
+
+  @override
+  String get darkVariantOled => 'OLED (أسود خالص)';
+
+  @override
+  String get unlock => 'فتح القفل';
+
+  @override
+  String get unlockFieldTitle => 'فتح قفل هذا الحقل؟';
+
+  @override
+  String get unlockFieldBody =>
+      'هذا الحقل مقفل لمنع التعديلات العرضية على بيانات الهوية الأساسية. فتح القفل يتيح لك الكتابة فوقه لهذه الجلسة فقط — ويُقفل تلقائيًا في المرة القادمة التي تفتح فيها هذه الشخصية.';
+
+  @override
+  String get unlockConfirm => 'فتح القفل';
+
+  @override
   String get sectionIdentity => 'الهوية';
 
   @override
@@ -81,10 +103,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attrStatus => 'الحالة';
 
   @override
-  String get attrCurrentLocation => 'الموقع الحالي';
+  String get attrLocation => 'الموقع';
 
   @override
-  String get attrCurrentArc => 'القوس الحالي';
+  String get attrArc => 'القوس';
 
   @override
   String get attrRole => 'الدور';

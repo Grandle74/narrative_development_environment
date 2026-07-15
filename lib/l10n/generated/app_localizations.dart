@@ -182,6 +182,48 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get themeDark;
 
+  /// No description provided for @darkBackgroundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark background'**
+  String get darkBackgroundTitle;
+
+  /// No description provided for @darkVariantGray.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Gray'**
+  String get darkVariantGray;
+
+  /// No description provided for @darkVariantOled.
+  ///
+  /// In en, this message translates to:
+  /// **'OLED (pure black)'**
+  String get darkVariantOled;
+
+  /// No description provided for @unlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get unlock;
+
+  /// No description provided for @unlockFieldTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock this field?'**
+  String get unlockFieldTitle;
+
+  /// No description provided for @unlockFieldBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is locked to prevent accidental edits to core identity data. Unlocking lets you overwrite it for this session only — it locks again next time you open this character.'**
+  String get unlockFieldBody;
+
+  /// No description provided for @unlockConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get unlockConfirm;
+
   /// No description provided for @sectionIdentity.
   ///
   /// In en, this message translates to:
@@ -242,17 +284,17 @@ abstract class AppLocalizations {
   /// **'Status'**
   String get attrStatus;
 
-  /// No description provided for @attrCurrentLocation.
+  /// No description provided for @attrLocation.
   ///
   /// In en, this message translates to:
-  /// **'Current Location'**
-  String get attrCurrentLocation;
+  /// **'Location'**
+  String get attrLocation;
 
-  /// No description provided for @attrCurrentArc.
+  /// No description provided for @attrArc.
   ///
   /// In en, this message translates to:
-  /// **'Current Arc'**
-  String get attrCurrentArc;
+  /// **'Arc'**
+  String get attrArc;
 
   /// No description provided for @attrRole.
   ///

@@ -51,6 +51,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeDark => 'Dark';
 
   @override
+  String get darkBackgroundTitle => 'Dark background';
+
+  @override
+  String get darkVariantGray => 'Dark Gray';
+
+  @override
+  String get darkVariantOled => 'OLED (pure black)';
+
+  @override
+  String get unlock => 'Unlock';
+
+  @override
+  String get unlockFieldTitle => 'Unlock this field?';
+
+  @override
+  String get unlockFieldBody =>
+      'This field is locked to prevent accidental edits to core identity data. Unlocking lets you overwrite it for this session only — it locks again next time you open this character.';
+
+  @override
+  String get unlockConfirm => 'Unlock';
+
+  @override
   String get sectionIdentity => 'Identity';
 
   @override
@@ -81,10 +103,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attrStatus => 'Status';
 
   @override
-  String get attrCurrentLocation => 'Current Location';
+  String get attrLocation => 'Location';
 
   @override
-  String get attrCurrentArc => 'Current Arc';
+  String get attrArc => 'Arc';
 
   @override
   String get attrRole => 'Role';

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/database.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../theme/theme_controller.dart';
+import '../../widgets/app_dialog_button.dart';
 import '../settings/settings_screen.dart';
 import 'character_detail_screen.dart';
 
@@ -29,14 +30,20 @@ class CharacterListScreen extends StatelessWidget {
           autofocus: true,
           decoration: InputDecoration(labelText: l10n.nameLabel),
         ),
+        actionsPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(MaterialLocalizations.of(dialogContext).cancelButtonLabel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialogContext).pop(controller.text.trim()),
-            child: Text(l10n.save),
+          AppDialogButtonRow(
+            buttons: [
+              AppDialogButton(
+                label: MaterialLocalizations.of(dialogContext).cancelButtonLabel,
+                onPressed: () => Navigator.of(dialogContext).pop(),
+              ),
+              AppDialogButton(
+                label: l10n.save,
+                primary: true,
+                onPressed: () => Navigator.of(dialogContext).pop(controller.text.trim()),
+              ),
+            ],
           ),
         ],
       ),

@@ -11,55 +11,39 @@ import 'tables.dart';
 part 'database.g.dart';
 
 List<AttributeDefinitionsCompanion> buildDefaultAttributeDefinitions() {
-  return <AttributeDefinitionsCompanion>[
-    _attributeDefinitionCompanion('name', 'character', 'text', true, 'identity'),
-    _attributeDefinitionCompanion('alias', 'character', 'text', true, 'identity'),
-    _attributeDefinitionCompanion('species', 'character', 'text', true, 'identity'),
-    _attributeDefinitionCompanion('birth', 'character', 'date', true, 'identity'),
-    _attributeDefinitionCompanion('status', 'character', 'enum', true, 'narrative'),
-    _attributeDefinitionCompanion('current_location', 'character', 'entity_ref', true, 'narrative'),
-    _attributeDefinitionCompanion('current_arc', 'character', 'text', true, 'narrative'),
-    _attributeDefinitionCompanion('role', 'character', 'text', true, 'narrative'),
-    _attributeDefinitionCompanion('affiliation', 'character', 'entity_ref', true, 'narrative'),
-    _attributeDefinitionCompanion('production_status', 'character', 'enum', true, 'narrative'),
-    _attributeDefinitionCompanion('narrative_function', 'character', 'text', true, 'narrative'),
-    _attributeDefinitionCompanion('first_appearance', 'character', 'entity_ref', false, 'narrative'),
-    _attributeDefinitionCompanion('core_belief', 'character', 'text', true, 'internal_state'),
-    _attributeDefinitionCompanion('core_desire', 'character', 'text', true, 'internal_state'),
-    _attributeDefinitionCompanion('core_fear', 'character', 'text', true, 'internal_state'),
-    _attributeDefinitionCompanion('core_conflict', 'character', 'text', true, 'internal_state'),
-    _attributeDefinitionCompanion('decision_process', 'character', 'text', true, 'decision_model'),
-    _attributeDefinitionCompanion('never_does', 'character', 'text', true, 'decision_model'),
-    _attributeDefinitionCompanion('never_says', 'character', 'text', true, 'decision_model'),
-    _attributeDefinitionCompanion('never_admits', 'character', 'text', true, 'decision_model'),
-    _attributeDefinitionCompanion('known_secret', 'character', 'entity_ref', true, 'knowledge'),
-    _attributeDefinitionCompanion('hidden_secret', 'character', 'entity_ref', true, 'knowledge'),
-    _attributeDefinitionCompanion('false_assumption', 'character', 'text', true, 'knowledge'),
-    _attributeDefinitionCompanion('dialogue_style', 'character', 'text', true, 'expression'),
-    _attributeDefinitionCompanion('typical_behavior', 'character', 'text', true, 'expression'),
-    _attributeDefinitionCompanion('body_language', 'character', 'text', true, 'expression'),
-    _attributeDefinitionCompanion('trust_a_to_b', 'relationship', 'number', true, 'relationship'),
-    _attributeDefinitionCompanion('trust_b_to_a', 'relationship', 'number', true, 'relationship'),
-    _attributeDefinitionCompanion('respect_a_to_b', 'relationship', 'number', true, 'relationship'),
-    _attributeDefinitionCompanion('respect_b_to_a', 'relationship', 'number', true, 'relationship'),
-    _attributeDefinitionCompanion('open_question', 'reader', 'text', true, 'reader_knowledge'),
+  return [
+    AttributeDefinitionsCompanion.insert(attrKey: 'name', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'identity'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'alias', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'identity'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'species', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'identity'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'birth', appliesTo: 'character', valueType: 'date', mutable: Value(true), layer: 'identity'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'status', appliesTo: 'character', valueType: 'enum', mutable: Value(true), layer: 'narrative'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'location', appliesTo: 'character', valueType: 'entity_ref', mutable: Value(true), layer: 'narrative'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'arc', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'narrative'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'role', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'narrative'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'affiliation', appliesTo: 'character', valueType: 'entity_ref', mutable: Value(true), layer: 'narrative'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'production_status', appliesTo: 'character', valueType: 'enum', mutable: Value(true), layer: 'narrative'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'narrative_function', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'narrative'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'first_appearance', appliesTo: 'character', valueType: 'entity_ref', mutable: Value(false), layer: 'narrative'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'core_belief', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'internal_state'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'core_desire', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'internal_state'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'core_fear', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'internal_state'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'core_conflict', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'internal_state'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'decision_process', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'decision_model'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'never_does', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'decision_model'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'never_says', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'decision_model'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'never_admits', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'decision_model'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'known_secret', appliesTo: 'character', valueType: 'entity_ref', mutable: Value(true), layer: 'knowledge'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'hidden_secret', appliesTo: 'character', valueType: 'entity_ref', mutable: Value(true), layer: 'knowledge'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'false_assumption', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'knowledge'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'dialogue_style', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'expression'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'typical_behavior', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'expression'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'body_language', appliesTo: 'character', valueType: 'text', mutable: Value(true), layer: 'expression'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'trust_a_to_b', appliesTo: 'relationship', valueType: 'number', mutable: Value(true), layer: 'relationship'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'trust_b_to_a', appliesTo: 'relationship', valueType: 'number', mutable: Value(true), layer: 'relationship'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'respect_a_to_b', appliesTo: 'relationship', valueType: 'number', mutable: Value(true), layer: 'relationship'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'respect_b_to_a', appliesTo: 'relationship', valueType: 'number', mutable: Value(true), layer: 'relationship'),
+    AttributeDefinitionsCompanion.insert(attrKey: 'open_question', appliesTo: 'reader', valueType: 'text', mutable: Value(true), layer: 'reader_knowledge'),
   ];
-}
-
-AttributeDefinitionsCompanion _attributeDefinitionCompanion(
-  String key,
-  String appliesTo,
-  String valueType,
-  bool mutable,
-  String layer,
-) {
-  return AttributeDefinitionsCompanion.insert(
-    attrKey: key,
-    appliesTo: appliesTo,
-    valueType: valueType,
-    mutable: Value(mutable),
-    layer: layer,
-  );
 }
 
 @DriftDatabase(tables: [Entities, AttributeDefinitions, Facts, Settings])
@@ -88,13 +72,20 @@ class AppDatabase extends _$AppDatabase {
             ));
           }
           if (from < 3) {
-            for (final attrKey in ['name', 'alias', 'species', 'birth']) {
-              await (update(attributeDefinitions)
-                    ..where((a) => a.attrKey.equals(attrKey)))
-                  .write(const AttributeDefinitionsCompanion(
-                mutable: Value(true),
-              ));
-            }
+            // 'current_location' / 'current_arc' implied live tracking
+            // they never did — every attribute here is "latest known
+            // Fact," not just these two. Renamed to drop the misleading
+            // prefix. Registry row + every historical Fact both move.
+            await (update(attributeDefinitions)
+                  ..where((a) => a.attrKey.equals('current_location')))
+                .write(const AttributeDefinitionsCompanion(attrKey: Value('location')));
+            await (update(attributeDefinitions)
+                  ..where((a) => a.attrKey.equals('current_arc')))
+                .write(const AttributeDefinitionsCompanion(attrKey: Value('arc')));
+            await (update(facts)..where((f) => f.attribute.equals('current_location')))
+                .write(const FactsCompanion(attribute: Value('location')));
+            await (update(facts)..where((f) => f.attribute.equals('current_arc')))
+                .write(const FactsCompanion(attribute: Value('arc')));
           }
         },
       );
@@ -189,6 +180,11 @@ class AppDatabase extends _$AppDatabase {
   /// The real current-state query: the most recent Fact per attribute
   /// for a subject, resolved by authoring time. Current state is never
   /// stored — it's always derived from the log at read time.
+  ///
+  /// Note: "most recent" currently means "most recently typed in," not
+  /// "most recent in the story's internal chronology" — there's no
+  /// story-time anchor to resolve against until Scenes/Events exist.
+  /// This is the thing to revisit once Part 6/8 land.
   Future<Map<String, FactRow>> currentAttributeValues(String subjectId) async {
     final rows = await (select(facts)..where((f) => f.subjectId.equals(subjectId))).get();
     final byAttribute = <String, FactRow>{};
