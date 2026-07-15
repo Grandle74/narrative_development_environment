@@ -18,11 +18,11 @@ class Entities extends Table {
 
 /// The registry: what attributes exist, what they mean, what type they
 /// hold. New attributes are new rows here, not new columns anywhere.
-@DataClassName('AttributeDefinitionRow')
 class AttributeDefinitions extends Table {
   TextColumn get attrKey => text()();
   TextColumn get appliesTo => text()(); // character | relationship | reader | ...
-  TextColumn get valueType => text()(); // text | number | boolean | entity_ref | enum
+  // text | number | boolean | entity_ref | enum | date
+  TextColumn get valueType => text()();
   BoolColumn get mutable => boolean().withDefault(const Constant(true))();
   TextColumn get layer => text()();
 
@@ -47,4 +47,17 @@ class Facts extends Table {
 
   @override
   Set<Column> get primaryKey => {id};
+}
+
+/// Small generic key-value store for app-level preferences that aren't
+/// part of the narrative data model (theme mode, UI state, etc). Kept in
+/// the same local SQLite file so there's no second storage mechanism to
+/// manage.
+@DataClassName('SettingRow')
+class Settings extends Table {
+  TextColumn get key => text()();
+  TextColumn get value => text()();
+
+  @override
+  Set<Column> get primaryKey => {key};
 }

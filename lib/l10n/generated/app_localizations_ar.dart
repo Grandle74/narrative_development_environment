@@ -28,4 +28,148 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unnamedCharacter => 'بدون اسم';
+
+  @override
+  String get characterDetailTitle => 'الشخصية';
+
+  @override
+  String get saved => 'تم الحفظ';
+
+  @override
+  String get settingsTitle => 'الإعدادات';
+
+  @override
+  String get appearanceTitle => 'المظهر';
+
+  @override
+  String get themeSystem => 'افتراضي النظام';
+
+  @override
+  String get themeLight => 'فاتح';
+
+  @override
+  String get themeDark => 'داكن';
+
+  @override
+  String get sectionIdentity => 'الهوية';
+
+  @override
+  String get sectionNarrative => 'السرد';
+
+  @override
+  String get sectionInternalState => 'الجوهر';
+
+  @override
+  String get sectionDecisionModel => 'اتخاذ القرار';
+
+  @override
+  String get sectionKnowledge => 'الأسرار';
+
+  @override
+  String get sectionExpression => 'التعبير';
+
+  @override
+  String get attrAlias => 'الاسم المستعار';
+
+  @override
+  String get attrSpecies => 'النوع';
+
+  @override
+  String get attrBirth => 'تاريخ الميلاد';
+
+  @override
+  String get attrStatus => 'الحالة';
+
+  @override
+  String get attrCurrentLocation => 'الموقع الحالي';
+
+  @override
+  String get attrCurrentArc => 'القوس الحالي';
+
+  @override
+  String get attrRole => 'الدور';
+
+  @override
+  String get attrAffiliation => 'الانتماء';
+
+  @override
+  String get attrProductionStatus => 'حالة التطوير';
+
+  @override
+  String get attrNarrativeFunction => 'الوظيفة السردية';
+
+  @override
+  String get attrFirstAppearance => 'أول ظهور';
+
+  @override
+  String get attrCoreBelief => 'الاعتقاد الجوهري';
+
+  @override
+  String get attrCoreDesire => 'الرغبة الجوهرية';
+
+  @override
+  String get attrCoreFear => 'الخوف الجوهري';
+
+  @override
+  String get attrCoreConflict => 'الصراع الجوهري';
+
+  @override
+  String get attrDecisionProcess => 'عملية اتخاذ القرار';
+
+  @override
+  String get attrNeverDoes => 'لا يفعل أبدًا';
+
+  @override
+  String get attrNeverSays => 'لا يقول أبدًا';
+
+  @override
+  String get attrNeverAdmits => 'لا يعترف أبدًا';
+
+  @override
+  String get attrKnownSecret => 'سر معروف';
+
+  @override
+  String get attrHiddenSecret => 'سر مخفي';
+
+  @override
+  String get attrFalseAssumption => 'افتراض خاطئ';
+
+  @override
+  String get attrDialogueStyle => 'أسلوب الحوار';
+
+  @override
+  String get attrTypicalBehavior => 'السلوك المعتاد';
+
+  @override
+  String get attrBodyLanguage => 'لغة الجسد';
+
+  @override
+  String get statusAlive => 'حي';
+
+  @override
+  String get statusDeceased => 'متوفى';
+
+  @override
+  String get statusMissing => 'مفقود';
+
+  @override
+  String get statusUnknown => 'غير معروف';
+
+  @override
+  String get statusTransformed => 'متحوّل';
+
+  @override
+  String get prodConcept => 'فكرة أولية';
+
+  @override
+  String get prodDeveloping => 'قيد التطوير';
+
+  @override
+  String get prodActive => 'نشط';
+
+  @override
+  String get prodFinal => 'نهائي';
+
+  @override
+  String get prodCut => 'محذوف';
 }

@@ -139,6 +139,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unnamed'**
   String get unnamedCharacter;
+
+  /// No description provided for @characterDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Character'**
+  String get characterDetailTitle;
+
+  /// No description provided for @saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @appearanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceTitle;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @sectionIdentity.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity'**
+  String get sectionIdentity;
+
+  /// No description provided for @sectionNarrative.
+  ///
+  /// In en, this message translates to:
+  /// **'Narrative'**
+  String get sectionNarrative;
+
+  /// No description provided for @sectionInternalState.
+  ///
+  /// In en, this message translates to:
+  /// **'Core'**
+  String get sectionInternalState;
+
+  /// No description provided for @sectionDecisionModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Decision Making'**
+  String get sectionDecisionModel;
+
+  /// No description provided for @sectionKnowledge.
+  ///
+  /// In en, this message translates to:
+  /// **'Secrets'**
+  String get sectionKnowledge;
+
+  /// No description provided for @sectionExpression.
+  ///
+  /// In en, this message translates to:
+  /// **'Expression'**
+  String get sectionExpression;
+
+  /// No description provided for @attrAlias.
+  ///
+  /// In en, this message translates to:
+  /// **'Alias'**
+  String get attrAlias;
+
+  /// No description provided for @attrSpecies.
+  ///
+  /// In en, this message translates to:
+  /// **'Species'**
+  String get attrSpecies;
+
+  /// No description provided for @attrBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth'**
+  String get attrBirth;
+
+  /// No description provided for @attrStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get attrStatus;
+
+  /// No description provided for @attrCurrentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Location'**
+  String get attrCurrentLocation;
+
+  /// No description provided for @attrCurrentArc.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Arc'**
+  String get attrCurrentArc;
+
+  /// No description provided for @attrRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get attrRole;
+
+  /// No description provided for @attrAffiliation.
+  ///
+  /// In en, this message translates to:
+  /// **'Affiliation'**
+  String get attrAffiliation;
+
+  /// No description provided for @attrProductionStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Production Status'**
+  String get attrProductionStatus;
+
+  /// No description provided for @attrNarrativeFunction.
+  ///
+  /// In en, this message translates to:
+  /// **'Narrative Function'**
+  String get attrNarrativeFunction;
+
+  /// No description provided for @attrFirstAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'First Appearance'**
+  String get attrFirstAppearance;
+
+  /// No description provided for @attrCoreBelief.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Belief'**
+  String get attrCoreBelief;
+
+  /// No description provided for @attrCoreDesire.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Desire'**
+  String get attrCoreDesire;
+
+  /// No description provided for @attrCoreFear.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Fear'**
+  String get attrCoreFear;
+
+  /// No description provided for @attrCoreConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Conflict'**
+  String get attrCoreConflict;
+
+  /// No description provided for @attrDecisionProcess.
+  ///
+  /// In en, this message translates to:
+  /// **'Decision Process'**
+  String get attrDecisionProcess;
+
+  /// No description provided for @attrNeverDoes.
+  ///
+  /// In en, this message translates to:
+  /// **'Never Does'**
+  String get attrNeverDoes;
+
+  /// No description provided for @attrNeverSays.
+  ///
+  /// In en, this message translates to:
+  /// **'Never Says'**
+  String get attrNeverSays;
+
+  /// No description provided for @attrNeverAdmits.
+  ///
+  /// In en, this message translates to:
+  /// **'Never Admits'**
+  String get attrNeverAdmits;
+
+  /// No description provided for @attrKnownSecret.
+  ///
+  /// In en, this message translates to:
+  /// **'Known Secret'**
+  String get attrKnownSecret;
+
+  /// No description provided for @attrHiddenSecret.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden Secret'**
+  String get attrHiddenSecret;
+
+  /// No description provided for @attrFalseAssumption.
+  ///
+  /// In en, this message translates to:
+  /// **'False Assumption'**
+  String get attrFalseAssumption;
+
+  /// No description provided for @attrDialogueStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dialogue Style'**
+  String get attrDialogueStyle;
+
+  /// No description provided for @attrTypicalBehavior.
+  ///
+  /// In en, this message translates to:
+  /// **'Typical Behavior'**
+  String get attrTypicalBehavior;
+
+  /// No description provided for @attrBodyLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Body Language'**
+  String get attrBodyLanguage;
+
+  /// No description provided for @statusAlive.
+  ///
+  /// In en, this message translates to:
+  /// **'Alive'**
+  String get statusAlive;
+
+  /// No description provided for @statusDeceased.
+  ///
+  /// In en, this message translates to:
+  /// **'Deceased'**
+  String get statusDeceased;
+
+  /// No description provided for @statusMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get statusMissing;
+
+  /// No description provided for @statusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get statusUnknown;
+
+  /// No description provided for @statusTransformed.
+  ///
+  /// In en, this message translates to:
+  /// **'Transformed'**
+  String get statusTransformed;
+
+  /// No description provided for @prodConcept.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get prodConcept;
+
+  /// No description provided for @prodDeveloping.
+  ///
+  /// In en, this message translates to:
+  /// **'Developing'**
+  String get prodDeveloping;
+
+  /// No description provided for @prodActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get prodActive;
+
+  /// No description provided for @prodFinal.
+  ///
+  /// In en, this message translates to:
+  /// **'Final'**
+  String get prodFinal;
+
+  /// No description provided for @prodCut.
+  ///
+  /// In en, this message translates to:
+  /// **'Cut'**
+  String get prodCut;
 }
 
 class _AppLocalizationsDelegate

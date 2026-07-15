@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../data/database.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../theme/theme_controller.dart';
+import '../settings/settings_screen.dart';
+import 'character_detail_screen.dart';
 
 class CharacterListScreen extends StatelessWidget {
-  const CharacterListScreen({super.key, required this.database});
+  const CharacterListScreen({
+    super.key,
+    required this.database,
+    required this.themeController,
+  });
 
   final AppDatabase database;
+  final ThemeController themeController;
 
   Future<void> _addCharacter(BuildContext context) async {
     final controller = TextEditingController();
@@ -45,7 +53,20 @@ class CharacterListScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.charactersTitle)),
+      appBar: AppBar(
+        title: Text(l10n.charactersTitle),
+        actions: [
+          IconButton(
+            tooltip: l10n.settingsTitle,
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => SettingsScreen(themeController: themeController),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: StreamBuilder<List<EntityRow>>(
         stream: database.watchEntitiesByType('character'),
         builder: (context, snapshot) {
@@ -62,6 +83,15 @@ class CharacterListScreen extends StatelessWidget {
               return ListTile(
                 title: Text(
                   character.displayName.isEmpty ? l10n.unnamedCharacter : character.displayName,
+                ),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => CharacterDetailScreen(
+                      database: database,
+                      entityId: character.id,
+                    ),
+                  ),
                 ),
               );
             },
