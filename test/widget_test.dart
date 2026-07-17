@@ -8,6 +8,7 @@
 // Not wired up here — fine for now, worth revisiting once there's
 // enough surface area to justify a real test setup.
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:narrative_development_environment/data/database.dart';
 import 'package:narrative_development_environment/main.dart';
@@ -20,5 +21,10 @@ void main() {
 
     await tester.pumpWidget(NdeApp(database: database, themeController: themeController));
     await tester.pump();
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+    await Future<void>.delayed(Duration.zero);
+    await database.close();
   });
 }

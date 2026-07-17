@@ -7,7 +7,7 @@ import '../../widgets/app_dialog_button.dart';
 import '../settings/settings_screen.dart';
 import 'character_detail_screen.dart';
 
-class CharacterListScreen extends StatelessWidget {
+class CharacterListScreen extends StatefulWidget {
   const CharacterListScreen({
     super.key,
     required this.database,
@@ -16,6 +16,30 @@ class CharacterListScreen extends StatelessWidget {
 
   final AppDatabase database;
   final ThemeController themeController;
+
+  @override
+  State<CharacterListScreen> createState() => _CharacterListScreenState();
+}
+
+class _CharacterListScreenState extends State<CharacterListScreen> {
+  late Future<List<EntityRow>> _charactersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _charactersFuture = _loadCharacters();
+  }
+
+  Future<List<EntityRow>> _loadCharacters() {
+    return widget.database.searchEntities('character', '');
+  }
+
+  Future<void> _refreshCharacters() async {
+    if (!mounted) return;
+    setState(() {
+      _charactersFuture = _loadCharacters();
+    });
+  }
 
   Future<void> _addCharacter(BuildContext context) async {
     final controller = TextEditingController();
@@ -51,8 +75,9 @@ class CharacterListScreen extends StatelessWidget {
 
     if (name == null || name.isEmpty) return;
 
-    final id = await database.createEntity('character', displayName: name);
-    await database.writeFact(subjectId: id, attribute: 'name', value: name);
+    final id = await widget.database.createEntity('character', displayName: name);
+    await widget.database.writeFact(subjectId: id, attribute: 'name', value: name);
+    await _refreshCharacters();
   }
 
   @override
@@ -68,16 +93,20 @@ class CharacterListScreen extends StatelessWidget {
             icon: const Icon(Icons.settings_outlined),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => SettingsScreen(themeController: themeController),
+                builder: (_) => SettingsScreen(themeController: widget.themeController),
               ),
             ),
           ),
         ],
       ),
-      body: StreamBuilder<List<EntityRow>>(
-        stream: database.watchEntitiesByType('character'),
+      body: FutureBuilder<List<EntityRow>>(
+        future: _charactersFuture,
         builder: (context, snapshot) {
           final characters = snapshot.data ?? const [];
+
+          if (snapshot.connectionState == ConnectionState.waiting && characters.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
           if (characters.isEmpty) {
             return Center(child: Text(l10n.noCharactersYet));
@@ -92,14 +121,17 @@ class CharacterListScreen extends StatelessWidget {
                   character.displayName.isEmpty ? l10n.unnamedCharacter : character.displayName,
                 ),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => CharacterDetailScreen(
-                      database: database,
-                      entityId: character.id,
+                onTap: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => CharacterDetailScreen(
+                        database: widget.database,
+                        entityId: character.id,
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                  await _refreshCharacters();
+                },
               );
             },
           );

@@ -19,16 +19,21 @@ Future<void> main() async {
   runApp(NdeApp(database: database, themeController: themeController));
 }
 
-class NdeApp extends StatelessWidget {
+class NdeApp extends StatefulWidget {
   const NdeApp({super.key, required this.database, required this.themeController});
 
   final AppDatabase database;
   final ThemeController themeController;
 
   @override
+  State<NdeApp> createState() => _NdeAppState();
+}
+
+class _NdeAppState extends State<NdeApp> {
+  @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: themeController,
+      listenable: widget.themeController,
       builder: (context, _) {
         return MaterialApp(
           onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
@@ -43,11 +48,20 @@ class NdeApp extends StatelessWidget {
             Locale('ar'),
           ],
           theme: AppTheme.light,
-          darkTheme: AppTheme.dark(themeController.darkVariant),
-          themeMode: themeController.mode,
-          home: CharacterListScreen(database: database, themeController: themeController),
+          darkTheme: AppTheme.dark(widget.themeController.darkVariant),
+          themeMode: widget.themeController.mode,
+          home: CharacterListScreen(
+            database: widget.database,
+            themeController: widget.themeController,
+          ),
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    widget.database.close();
+    super.dispose();
   }
 }

@@ -200,35 +200,17 @@ abstract class AppLocalizations {
   /// **'OLED (pure black)'**
   String get darkVariantOled;
 
-  /// No description provided for @unlock.
-  ///
-  /// In en, this message translates to:
-  /// **'Unlock'**
-  String get unlock;
-
-  /// No description provided for @unlockFieldTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Unlock this field?'**
-  String get unlockFieldTitle;
-
-  /// No description provided for @unlockFieldBody.
-  ///
-  /// In en, this message translates to:
-  /// **'This field is locked to prevent accidental edits to core identity data. Unlocking lets you overwrite it for this session only — it locks again next time you open this character.'**
-  String get unlockFieldBody;
-
-  /// No description provided for @unlockConfirm.
-  ///
-  /// In en, this message translates to:
-  /// **'Unlock'**
-  String get unlockConfirm;
-
   /// No description provided for @sectionIdentity.
   ///
   /// In en, this message translates to:
   /// **'Identity'**
   String get sectionIdentity;
+
+  /// No description provided for @sectionPowers.
+  ///
+  /// In en, this message translates to:
+  /// **'Powers'**
+  String get sectionPowers;
 
   /// No description provided for @sectionNarrative.
   ///
@@ -278,23 +260,17 @@ abstract class AppLocalizations {
   /// **'Birth'**
   String get attrBirth;
 
-  /// No description provided for @attrStatus.
+  /// No description provided for @attrNationality.
   ///
   /// In en, this message translates to:
-  /// **'Status'**
-  String get attrStatus;
+  /// **'Nationality'**
+  String get attrNationality;
 
-  /// No description provided for @attrLocation.
+  /// No description provided for @attrCurrentArc.
   ///
   /// In en, this message translates to:
-  /// **'Location'**
-  String get attrLocation;
-
-  /// No description provided for @attrArc.
-  ///
-  /// In en, this message translates to:
-  /// **'Arc'**
-  String get attrArc;
+  /// **'Current Arc'**
+  String get attrCurrentArc;
 
   /// No description provided for @attrRole.
   ///
@@ -314,17 +290,23 @@ abstract class AppLocalizations {
   /// **'Production Status'**
   String get attrProductionStatus;
 
-  /// No description provided for @attrNarrativeFunction.
+  /// No description provided for @attrNarrativePurpose.
   ///
   /// In en, this message translates to:
-  /// **'Narrative Function'**
-  String get attrNarrativeFunction;
+  /// **'Narrative Purpose'**
+  String get attrNarrativePurpose;
 
-  /// No description provided for @attrFirstAppearance.
+  /// No description provided for @attrFirstAppearanceVolume.
   ///
   /// In en, this message translates to:
-  /// **'First Appearance'**
-  String get attrFirstAppearance;
+  /// **'First Appearance (Volume)'**
+  String get attrFirstAppearanceVolume;
+
+  /// No description provided for @attrFirstAppearanceChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'First Appearance (Chapter)'**
+  String get attrFirstAppearanceChapter;
 
   /// No description provided for @attrCoreBelief.
   ///
@@ -410,35 +392,35 @@ abstract class AppLocalizations {
   /// **'Body Language'**
   String get attrBodyLanguage;
 
-  /// No description provided for @statusAlive.
+  /// No description provided for @speciesHuman.
   ///
   /// In en, this message translates to:
-  /// **'Alive'**
-  String get statusAlive;
+  /// **'Human'**
+  String get speciesHuman;
 
-  /// No description provided for @statusDeceased.
+  /// No description provided for @speciesMonster.
   ///
   /// In en, this message translates to:
-  /// **'Deceased'**
-  String get statusDeceased;
+  /// **'Monster'**
+  String get speciesMonster;
 
-  /// No description provided for @statusMissing.
+  /// No description provided for @speciesSkeleton.
   ///
   /// In en, this message translates to:
-  /// **'Missing'**
-  String get statusMissing;
+  /// **'Skeleton'**
+  String get speciesSkeleton;
 
-  /// No description provided for @statusUnknown.
+  /// No description provided for @speciesHalfHumanMonster.
   ///
   /// In en, this message translates to:
-  /// **'Unknown'**
-  String get statusUnknown;
+  /// **'Half-Human, Half-Monster'**
+  String get speciesHalfHumanMonster;
 
-  /// No description provided for @statusTransformed.
+  /// No description provided for @speciesHalfHumanSkeleton.
   ///
   /// In en, this message translates to:
-  /// **'Transformed'**
-  String get statusTransformed;
+  /// **'Half-Human, Half-Skeleton'**
+  String get speciesHalfHumanSkeleton;
 
   /// No description provided for @prodConcept.
   ///
@@ -469,6 +451,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cut'**
   String get prodCut;
+
+  /// No description provided for @mainPowerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Power'**
+  String get mainPowerLabel;
+
+  /// No description provided for @stonePowersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Power Stones'**
+  String get stonePowersLabel;
+
+  /// No description provided for @powerNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get powerNone;
+
+  /// No description provided for @powerFire.
+  ///
+  /// In en, this message translates to:
+  /// **'Fire Nature'**
+  String get powerFire;
+
+  /// No description provided for @powerIce.
+  ///
+  /// In en, this message translates to:
+  /// **'Ice Nature'**
+  String get powerIce;
+
+  /// No description provided for @powerMist.
+  ///
+  /// In en, this message translates to:
+  /// **'Mist Nature'**
+  String get powerMist;
+
+  /// No description provided for @powerEarth.
+  ///
+  /// In en, this message translates to:
+  /// **'Earth Nature'**
+  String get powerEarth;
+
+  /// No description provided for @powerWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water Nature'**
+  String get powerWater;
+
+  /// No description provided for @powerAir.
+  ///
+  /// In en, this message translates to:
+  /// **'Air Nature'**
+  String get powerAir;
+
+  /// No description provided for @powerElectro.
+  ///
+  /// In en, this message translates to:
+  /// **'Electro Nature'**
+  String get powerElectro;
+
+  /// No description provided for @powerPlant.
+  ///
+  /// In en, this message translates to:
+  /// **'Plant Nature'**
+  String get powerPlant;
+
+  /// No description provided for @powerDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Nature'**
+  String get powerDark;
+
+  /// No description provided for @tagAddHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add…'**
+  String get tagAddHint;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @removedTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get removedTag;
+
+  /// No description provided for @unlockToEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock to edit'**
+  String get unlockToEdit;
+
+  /// No description provided for @lockEditing.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock'**
+  String get lockEditing;
 }
 
 class _AppLocalizationsDelegate

@@ -4,13 +4,14 @@ import '../../data/attribute_labels.dart';
 import '../../data/database.dart';
 import '../../data/enum_options.dart';
 import '../../l10n/generated/app_localizations.dart';
-import '../../widgets/app_dialog_button.dart';
 import '../../widgets/inputs/attribute_fields.dart';
+import '../../widgets/inputs/power_selector.dart';
 import '../../widgets/lockable_field.dart';
 
 /// Section display order. Matches AttributeDefinition.layer values.
 const List<String> _sectionOrder = [
   'identity',
+  'powers',
   'narrative',
   'internal_state',
   'decision_model',
@@ -20,18 +21,20 @@ const List<String> _sectionOrder = [
 
 /// Field display order within each section. Anything not listed here
 /// (a future attribute added to the registry) still renders — it just
-/// falls to the end of its section instead of erroring.
+/// falls to the end of its section instead of erroring. The 'powers'
+/// section is rendered separately by PowersGrid and doesn't use this.
 const List<String> _fieldOrder = [
-  'name', 'alias', 'species', 'birth',
-  'status', 'location', 'arc', 'role', 'affiliation',
-  'production_status', 'narrative_function', 'first_appearance',
+  'name', 'alias', 'species', 'birth', 'nationality',
+  'current_arc', 'role', 'affiliation',
+  'production_status', 'narrative_purpose',
+  'first_appearance_volume', 'first_appearance_chapter',
   'core_belief', 'core_desire', 'core_fear', 'core_conflict',
   'decision_process', 'never_does', 'never_says', 'never_admits',
   'known_secret', 'hidden_secret', 'false_assumption',
   'dialogue_style', 'typical_behavior', 'body_language',
 ];
 
-const Set<String> _shortTextFields = {'name', 'alias', 'species', 'role'};
+const Set<String> _shortTextFields = {'name'};
 
 class CharacterDetailScreen extends StatefulWidget {
   const CharacterDetailScreen({
@@ -50,9 +53,7 @@ class CharacterDetailScreen extends StatefulWidget {
 class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   late Future<_FormData> _future;
   final Map<String, String> _edits = {};
-  // Fields explicitly unlocked for this session only. Cleared on every
-  // save/reload — unlocking is deliberate and temporary, not permanent.
-  final Set<String> _unlockedFields = {};
+  final Map<String, bool> _identityLocks = {};
   bool _saving = false;
 
   @override
@@ -103,40 +104,9 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
     setState(() {
       _saving = false;
       _edits.clear();
-      _unlockedFields.clear();
       _future = _load();
     });
     messenger.showSnackBar(SnackBar(content: Text(savedLabel)));
-  }
-
-  Future<void> _confirmUnlock(String attrKey) async {
-    final l10n = AppLocalizations.of(context)!;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l10n.unlockFieldTitle),
-        content: Text(l10n.unlockFieldBody),
-        actionsPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-        actions: [
-          AppDialogButtonRow(
-            buttons: [
-              AppDialogButton(
-                label: MaterialLocalizations.of(dialogContext).cancelButtonLabel,
-                onPressed: () => Navigator.of(dialogContext).pop(false),
-              ),
-              AppDialogButton(
-                label: l10n.unlockConfirm,
-                primary: true,
-                onPressed: () => Navigator.of(dialogContext).pop(true),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-    if (confirmed == true) {
-      setState(() => _unlockedFields.add(attrKey));
-    }
   }
 
   @override
@@ -168,19 +138,21 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
                 if (bySection[section] != null)
                   ExpansionTile(
                     title: Text(sectionLabel(l10n, section)),
-                    initiallyExpanded: section == 'identity',
+                    initiallyExpanded: section == 'identity' || section == 'powers',
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                        child: Column(
-                          children: [
-                            for (final def in bySection[section]!)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 12),
-                                child: _buildField(l10n, data, def),
+                        child: section == 'powers'
+                            ? _buildPowersGrid(data)
+                            : Column(
+                                children: [
+                                  for (final def in bySection[section]!)
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 12),
+                                      child: _buildField(l10n, data, def),
+                                    ),
+                                ],
                               ),
-                          ],
-                        ),
                       ),
                     ],
                   ),
@@ -211,24 +183,54 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   Widget _buildField(AppLocalizations l10n, _FormData data, AttributeDefinition def) {
     final currentFact = data.current[def.attrKey];
     final currentValue = _edits[def.attrKey] ?? currentFact?.value;
-    final unlocked = _unlockedFields.contains(def.attrKey);
-    final locked = !def.mutable && currentFact != null && !unlocked;
-    final enabled = def.mutable || currentFact == null || unlocked;
+    final isIdentityField = def.layer == 'identity';
+    final locked = isIdentityField && (_identityLocks[def.attrKey] ?? false);
+    final enabled = !locked && (def.mutable || currentFact == null);
+
+    final field = AttributeField(
+      label: attributeLabel(l10n, def.attrKey),
+      valueType: def.valueType,
+      initialValue: currentValue,
+      enabled: enabled,
+      multiline: !_shortTextFields.contains(def.attrKey),
+      options: EnumOptions.optionsFor(def.attrKey),
+      optionLabel: (v) => enumOptionLabel(l10n, def.attrKey, v),
+      onChanged: (value) {
+        setState(() {
+          _edits[def.attrKey] = value;
+        });
+        if (def.attrKey == 'name') {
+          // Persist display name immediately so lists update without pressing Save.
+          widget.database.renameEntity(widget.entityId, value);
+        }
+      },
+    );
+
+    if (!isIdentityField) return field;
 
     return LockableField(
       locked: locked,
-      tooltip: l10n.unlock,
-      onUnlock: () => _confirmUnlock(def.attrKey),
-      child: AttributeField(
-        label: attributeLabel(l10n, def.attrKey),
-        valueType: def.valueType,
-        initialValue: currentValue,
-        enabled: enabled,
-        multiline: !_shortTextFields.contains(def.attrKey),
-        options: EnumOptions.optionsFor(def.attrKey),
-        optionLabel: (v) => enumOptionLabel(l10n, def.attrKey, v),
-        onChanged: (value) => _edits[def.attrKey] = value,
-      ),
+      tooltip: locked ? l10n.unlockToEdit : l10n.lockEditing,
+      onToggle: () => setState(() => _identityLocks[def.attrKey] = !locked),
+      child: field,
+    );
+  }
+
+  /// The Powers section spans multiple attributes (main_power +
+  /// stone_1_power..stone_8_power) so it renders as one composite
+  /// widget instead of one AttributeField per definition.
+  Widget _buildPowersGrid(_FormData data) {
+    String? valueOf(String key) => _edits[key] ?? data.current[key]?.value;
+
+    void setValue(String key, String? value) {
+      setState(() => _edits[key] = value ?? '');
+    }
+
+    return PowersGrid(
+      mainPower: valueOf('main_power'),
+      stonePowers: [for (var i = 1; i <= 8; i++) valueOf('stone_${i}_power')],
+      onMainPowerChanged: (v) => setValue('main_power', v),
+      onStonePowerChanged: (index, v) => setValue('stone_${index + 1}_power', v),
     );
   }
 }

@@ -16,22 +16,22 @@ String attributeLabel(AppLocalizations l10n, String attrKey) {
       return l10n.attrSpecies;
     case 'birth':
       return l10n.attrBirth;
-    case 'status':
-      return l10n.attrStatus;
-    case 'location':
-      return l10n.attrLocation;
-    case 'arc':
-      return l10n.attrArc;
+    case 'nationality':
+      return l10n.attrNationality;
+    case 'current_arc':
+      return l10n.attrCurrentArc;
     case 'role':
       return l10n.attrRole;
     case 'affiliation':
       return l10n.attrAffiliation;
     case 'production_status':
       return l10n.attrProductionStatus;
-    case 'narrative_function':
-      return l10n.attrNarrativeFunction;
-    case 'first_appearance':
-      return l10n.attrFirstAppearance;
+    case 'narrative_purpose':
+      return l10n.attrNarrativePurpose;
+    case 'first_appearance_volume':
+      return l10n.attrFirstAppearanceVolume;
+    case 'first_appearance_chapter':
+      return l10n.attrFirstAppearanceChapter;
     case 'core_belief':
       return l10n.attrCoreBelief;
     case 'core_desire':
@@ -69,6 +69,8 @@ String sectionLabel(AppLocalizations l10n, String layer) {
   switch (layer) {
     case 'identity':
       return l10n.sectionIdentity;
+    case 'powers':
+      return l10n.sectionPowers;
     case 'narrative':
       return l10n.sectionNarrative;
     case 'internal_state':
@@ -86,16 +88,16 @@ String sectionLabel(AppLocalizations l10n, String layer) {
 
 String enumOptionLabel(AppLocalizations l10n, String attrKey, String value) {
   switch ('$attrKey.$value') {
-    case 'status.alive':
-      return l10n.statusAlive;
-    case 'status.deceased':
-      return l10n.statusDeceased;
-    case 'status.missing':
-      return l10n.statusMissing;
-    case 'status.unknown':
-      return l10n.statusUnknown;
-    case 'status.transformed':
-      return l10n.statusTransformed;
+    case 'species.human':
+      return l10n.speciesHuman;
+    case 'species.monster':
+      return l10n.speciesMonster;
+    case 'species.skeleton':
+      return l10n.speciesSkeleton;
+    case 'species.half_human_monster':
+      return l10n.speciesHalfHumanMonster;
+    case 'species.half_human_skeleton':
+      return l10n.speciesHalfHumanSkeleton;
     case 'production_status.concept':
       return l10n.prodConcept;
     case 'production_status.developing':

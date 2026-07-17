@@ -13,27 +13,26 @@ class LockableField extends StatelessWidget {
     super.key,
     required this.locked,
     required this.tooltip,
-    required this.onUnlock,
+    required this.onToggle,
     required this.child,
   });
 
   final bool locked;
   final String tooltip;
-  final VoidCallback onUnlock;
+  final VoidCallback onToggle;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    if (!locked) return child;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(child: child),
         const SizedBox(width: 4),
         IconButton(
-          icon: const Icon(Icons.lock_outline),
+          icon: Icon(locked ? Icons.lock_outline : Icons.lock_open),
           tooltip: tooltip,
-          onPressed: onUnlock,
+          onPressed: onToggle,
         ),
       ],
     );

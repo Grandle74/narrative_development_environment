@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/database.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 /// Dispatches to the right input widget for an AttributeDefinition's
 /// `valueType`. This is the single place that knows how a value type
@@ -83,6 +86,13 @@ class AttributeField extends StatelessWidget {
           enabled: enabled,
           onChanged: onChanged,
         );
+      case 'tag_list':
+        return TagListAttributeField(
+          label: label,
+          initialValue: initialValue,
+          enabled: enabled,
+          onChanged: onChanged,
+        );
       case 'entity_ref':
         if (database != null && targetEntityType != null) {
           return EntityRefAttributeField(
@@ -94,9 +104,9 @@ class AttributeField extends StatelessWidget {
             onChanged: onChanged,
           );
         }
-        // Target entity type doesn't exist yet (Scene/Secret/Place/Org
-        // are later Parts) — fall back to text rather than fake a
-        // picker with nothing to pick from.
+        // Target entity type doesn't exist yet (Scene/Secret/Place/
+        // Organization are later Parts) — fall back to text rather than
+        // fake a picker with nothing to pick from.
         return TextAttributeField(
           label: label,
           initialValue: initialValue,
@@ -358,6 +368,141 @@ class DateAttributeField extends StatelessWidget {
           suffixIcon: const Icon(Icons.calendar_today_outlined, size: 18),
         ),
         child: Text(display),
+      ),
+    );
+  }
+}
+
+/// A field that holds several short free-form entries (e.g. Arc, Role)
+/// instead of one block of text. Stored as a JSON array in the Fact
+/// value. Starts locked — tap the padlock to reveal the ✕ on each chip
+/// so a stray tap can't delete something by accident. Every removal can
+/// be undone from the snackbar it triggers.
+class TagListAttributeField extends StatefulWidget {
+  const TagListAttributeField({
+    super.key,
+    required this.label,
+    required this.initialValue,
+    required this.onChanged,
+    this.enabled = true,
+  });
+
+  final String label;
+  final String? initialValue;
+  final ValueChanged<String> onChanged;
+  final bool enabled;
+
+  @override
+  State<TagListAttributeField> createState() => _TagListAttributeFieldState();
+}
+
+class _TagListAttributeFieldState extends State<TagListAttributeField> {
+  late final List<String> _tags = _parse(widget.initialValue);
+  bool _locked = true;
+  final _addController = TextEditingController();
+
+  static List<String> _parse(String? raw) {
+    if (raw == null || raw.trim().isEmpty) return [];
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is List) return decoded.map((e) => e.toString()).toList();
+    } catch (_) {
+      // Legacy plain-text value from before this field used tags — keep
+      // it as a single tag rather than losing it silently.
+      return [raw];
+    }
+    return [];
+  }
+
+  void _commit() => widget.onChanged(jsonEncode(_tags));
+
+  void _addTag() {
+    final text = _addController.text.trim();
+    if (text.isEmpty) return;
+    setState(() {
+      _tags.add(text);
+      _addController.clear();
+    });
+    _commit();
+  }
+
+  void _removeTag(int index) {
+    final removed = _tags[index];
+    setState(() => _tags.removeAt(index));
+    _commit();
+
+    final l10n = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${l10n.removedTag}: "$removed"'),
+        action: SnackBarAction(
+          label: l10n.undo,
+          onPressed: () {
+            setState(() => _tags.insert(index, removed));
+            _commit();
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _addController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    final canEdit = widget.enabled && !_locked;
+
+    return InputDecorator(
+      decoration: InputDecoration(
+        labelText: widget.label,
+        enabled: widget.enabled,
+        suffixIcon: widget.enabled
+            ? IconButton(
+                tooltip: _locked ? l10n.unlockToEdit : l10n.lockEditing,
+                icon: Icon(_locked ? Icons.lock_outline : Icons.lock_open, size: 18),
+                onPressed: () => setState(() => _locked = !_locked),
+              )
+            : null,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (_tags.isEmpty)
+            Text('—', style: TextStyle(color: scheme.onSurfaceVariant))
+          else
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                for (var i = 0; i < _tags.length; i++)
+                  Chip(
+                    label: Text(_tags[i]),
+                    onDeleted: canEdit ? () => _removeTag(i) : null,
+                  ),
+              ],
+            ),
+          if (canEdit) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _addController,
+                    decoration: InputDecoration(hintText: l10n.tagAddHint, isDense: true),
+                    onSubmitted: (_) => _addTag(),
+                  ),
+                ),
+                IconButton(icon: const Icon(Icons.add), onPressed: _addTag),
+              ],
+            ),
+          ],
+        ],
       ),
     );
   }

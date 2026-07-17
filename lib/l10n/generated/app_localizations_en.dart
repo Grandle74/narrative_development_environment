@@ -60,20 +60,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get darkVariantOled => 'OLED (pure black)';
 
   @override
-  String get unlock => 'Unlock';
-
-  @override
-  String get unlockFieldTitle => 'Unlock this field?';
-
-  @override
-  String get unlockFieldBody =>
-      'This field is locked to prevent accidental edits to core identity data. Unlocking lets you overwrite it for this session only — it locks again next time you open this character.';
-
-  @override
-  String get unlockConfirm => 'Unlock';
-
-  @override
   String get sectionIdentity => 'Identity';
+
+  @override
+  String get sectionPowers => 'Powers';
 
   @override
   String get sectionNarrative => 'Narrative';
@@ -100,13 +90,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attrBirth => 'Birth';
 
   @override
-  String get attrStatus => 'Status';
+  String get attrNationality => 'Nationality';
 
   @override
-  String get attrLocation => 'Location';
-
-  @override
-  String get attrArc => 'Arc';
+  String get attrCurrentArc => 'Current Arc';
 
   @override
   String get attrRole => 'Role';
@@ -118,10 +105,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attrProductionStatus => 'Production Status';
 
   @override
-  String get attrNarrativeFunction => 'Narrative Function';
+  String get attrNarrativePurpose => 'Narrative Purpose';
 
   @override
-  String get attrFirstAppearance => 'First Appearance';
+  String get attrFirstAppearanceVolume => 'First Appearance (Volume)';
+
+  @override
+  String get attrFirstAppearanceChapter => 'First Appearance (Chapter)';
 
   @override
   String get attrCoreBelief => 'Core Belief';
@@ -166,19 +156,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attrBodyLanguage => 'Body Language';
 
   @override
-  String get statusAlive => 'Alive';
+  String get speciesHuman => 'Human';
 
   @override
-  String get statusDeceased => 'Deceased';
+  String get speciesMonster => 'Monster';
 
   @override
-  String get statusMissing => 'Missing';
+  String get speciesSkeleton => 'Skeleton';
 
   @override
-  String get statusUnknown => 'Unknown';
+  String get speciesHalfHumanMonster => 'Half-Human, Half-Monster';
 
   @override
-  String get statusTransformed => 'Transformed';
+  String get speciesHalfHumanSkeleton => 'Half-Human, Half-Skeleton';
 
   @override
   String get prodConcept => 'Concept';
@@ -194,4 +184,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get prodCut => 'Cut';
+
+  @override
+  String get mainPowerLabel => 'Main Power';
+
+  @override
+  String get stonePowersLabel => 'Power Stones';
+
+  @override
+  String get powerNone => 'None';
+
+  @override
+  String get powerFire => 'Fire Nature';
+
+  @override
+  String get powerIce => 'Ice Nature';
+
+  @override
+  String get powerMist => 'Mist Nature';
+
+  @override
+  String get powerEarth => 'Earth Nature';
+
+  @override
+  String get powerWater => 'Water Nature';
+
+  @override
+  String get powerAir => 'Air Nature';
+
+  @override
+  String get powerElectro => 'Electro Nature';
+
+  @override
+  String get powerPlant => 'Plant Nature';
+
+  @override
+  String get powerDark => 'Dark Nature';
+
+  @override
+  String get tagAddHint => 'Add…';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get removedTag => 'Removed';
+
+  @override
+  String get unlockToEdit => 'Unlock to edit';
+
+  @override
+  String get lockEditing => 'Lock';
 }

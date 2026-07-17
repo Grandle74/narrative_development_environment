@@ -51,7 +51,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get themeDark => 'داكن';
 
   @override
-  String get darkBackgroundTitle => 'خلفية الوضع الداكن';
+  String get darkBackgroundTitle => 'الخلفية الداكنة';
 
   @override
   String get darkVariantGray => 'رمادي داكن';
@@ -60,20 +60,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get darkVariantOled => 'OLED (أسود خالص)';
 
   @override
-  String get unlock => 'فتح القفل';
-
-  @override
-  String get unlockFieldTitle => 'فتح قفل هذا الحقل؟';
-
-  @override
-  String get unlockFieldBody =>
-      'هذا الحقل مقفل لمنع التعديلات العرضية على بيانات الهوية الأساسية. فتح القفل يتيح لك الكتابة فوقه لهذه الجلسة فقط — ويُقفل تلقائيًا في المرة القادمة التي تفتح فيها هذه الشخصية.';
-
-  @override
-  String get unlockConfirm => 'فتح القفل';
-
-  @override
   String get sectionIdentity => 'الهوية';
+
+  @override
+  String get sectionPowers => 'القوى';
 
   @override
   String get sectionNarrative => 'السرد';
@@ -100,13 +90,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attrBirth => 'تاريخ الميلاد';
 
   @override
-  String get attrStatus => 'الحالة';
+  String get attrNationality => 'الجنسية';
 
   @override
-  String get attrLocation => 'الموقع';
-
-  @override
-  String get attrArc => 'القوس';
+  String get attrCurrentArc => 'القوس الحالي';
 
   @override
   String get attrRole => 'الدور';
@@ -118,10 +105,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attrProductionStatus => 'حالة التطوير';
 
   @override
-  String get attrNarrativeFunction => 'الوظيفة السردية';
+  String get attrNarrativePurpose => 'الغرض السردي';
 
   @override
-  String get attrFirstAppearance => 'أول ظهور';
+  String get attrFirstAppearanceVolume => 'أول ظهور (المجلد)';
+
+  @override
+  String get attrFirstAppearanceChapter => 'أول ظهور (الفصل)';
 
   @override
   String get attrCoreBelief => 'الاعتقاد الجوهري';
@@ -166,19 +156,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attrBodyLanguage => 'لغة الجسد';
 
   @override
-  String get statusAlive => 'حي';
+  String get speciesHuman => 'إنسان';
 
   @override
-  String get statusDeceased => 'متوفى';
+  String get speciesMonster => 'وحش';
 
   @override
-  String get statusMissing => 'مفقود';
+  String get speciesSkeleton => 'هيكل عظمي';
 
   @override
-  String get statusUnknown => 'غير معروف';
+  String get speciesHalfHumanMonster => 'نصف إنسان ونصف وحش';
 
   @override
-  String get statusTransformed => 'متحوّل';
+  String get speciesHalfHumanSkeleton => 'نصف إنسان ونصف هيكل عظمي';
 
   @override
   String get prodConcept => 'فكرة أولية';
@@ -194,4 +184,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get prodCut => 'محذوف';
+
+  @override
+  String get mainPowerLabel => 'القوة الرئيسية';
+
+  @override
+  String get stonePowersLabel => 'أحجار القوة';
+
+  @override
+  String get powerNone => 'بلا';
+
+  @override
+  String get powerFire => 'طبيعة النّار';
+
+  @override
+  String get powerIce => 'طبيعة الثّلج';
+
+  @override
+  String get powerMist => 'طبيعة الضّباب';
+
+  @override
+  String get powerEarth => 'طبيعة الصّخر';
+
+  @override
+  String get powerWater => 'طبيعة الماء';
+
+  @override
+  String get powerAir => 'طبيعة الهواء';
+
+  @override
+  String get powerElectro => 'طبيعة الكهرباء';
+
+  @override
+  String get powerPlant => 'طبيعة النّبات';
+
+  @override
+  String get powerDark => 'طبيعة الظّلام';
+
+  @override
+  String get tagAddHint => 'إضافة…';
+
+  @override
+  String get undo => 'تراجع';
+
+  @override
+  String get removedTag => 'تم الحذف';
+
+  @override
+  String get unlockToEdit => 'افتح القفل للتعديل';
+
+  @override
+  String get lockEditing => 'قفل';
 }
