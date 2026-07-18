@@ -5,8 +5,8 @@ import '../../data/database.dart';
 import '../../data/enum_options.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../widgets/inputs/attribute_fields.dart';
+import '../../widgets/inputs/nationality_picker.dart';
 import '../../widgets/inputs/power_selector.dart';
-import '../../widgets/lockable_field.dart';
 
 /// Section display order. Matches AttributeDefinition.layer values.
 const List<String> _sectionOrder = [
@@ -145,13 +145,7 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
                         child: section == 'powers'
                             ? _buildPowersGrid(data)
                             : Column(
-                                children: [
-                                  for (final def in bySection[section]!)
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 12),
-                                      child: _buildField(l10n, data, def),
-                                    ),
-                                ],
+                                children: _buildSectionFields(l10n, data, bySection[section]!),
                               ),
                       ),
                     ],
@@ -180,14 +174,95 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
     );
   }
 
+  List<Widget> _buildSectionFields(AppLocalizations l10n, _FormData data, List<AttributeDefinition> defs) {
+    final widgets = <Widget>[];
+    
+    // First Appearance (Volume) and First Appearance (Chapter) should be side-by-side.
+    final List<AttributeDefinition> normalDefs = [];
+    AttributeDefinition? volDef;
+    AttributeDefinition? chapDef;
+
+    for (final def in defs) {
+      if (def.attrKey == 'first_appearance_volume') {
+        volDef = def;
+      } else if (def.attrKey == 'first_appearance_chapter') {
+        chapDef = def;
+      } else {
+        normalDefs.add(def);
+      }
+    }
+
+    // Add all fields leading up to where the first appearance fields belong
+    for (final def in normalDefs) {
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: _buildField(l10n, data, def),
+      ));
+    }
+
+    // Add side-by-side first appearance if both are present
+    if (volDef != null || chapDef != null) {
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (volDef != null)
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(right: chapDef != null ? 8 : 0),
+                  child: _buildField(l10n, data, volDef),
+                ),
+              ),
+            if (chapDef != null)
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: volDef != null ? 8 : 0),
+                  child: _buildField(l10n, data, chapDef),
+                ),
+              ),
+          ],
+        ),
+      ));
+    }
+
+    return widgets;
+  }
+
   Widget _buildField(AppLocalizations l10n, _FormData data, AttributeDefinition def) {
     final currentFact = data.current[def.attrKey];
     final currentValue = _edits[def.attrKey] ?? currentFact?.value;
     final isIdentityField = def.layer == 'identity';
-    final locked = isIdentityField && (_identityLocks[def.attrKey] ?? false);
-    final enabled = !locked && (def.mutable || currentFact == null);
+    
+    // We maintain a local locked state per identity field. If not toggled, it defaults to locked (false).
+    final locked = isIdentityField && !(_identityLocks[def.attrKey] ?? false);
+    
+    // An identity field is enabled only if it is unlocked.
+    // Non-identity fields are enabled if they are mutable or have no value yet.
+    final enabled = isIdentityField ? !locked : (def.mutable || currentFact == null);
 
-    final field = AttributeField(
+    Widget? lockButton;
+    if (isIdentityField && def.valueType != 'tag_list') {
+      lockButton = IconButton(
+        icon: Icon(locked ? Icons.lock_outline : Icons.lock_open, size: 18),
+        tooltip: locked ? l10n.unlockToEdit : l10n.lockEditing,
+        onPressed: () => setState(() => _identityLocks[def.attrKey] = locked),
+      );
+    }
+
+    if (def.attrKey == 'nationality') {
+      return NationalityPickerField(
+        key: ValueKey('${def.attrKey}_$enabled'),
+        label: attributeLabel(l10n, def.attrKey),
+        initialValue: currentValue,
+        enabled: enabled,
+        suffixIcon: lockButton,
+        onChanged: (value) => setState(() => _edits[def.attrKey] = value),
+      );
+    }
+
+    return AttributeField(
+      key: ValueKey('${def.attrKey}_$enabled'),
       label: attributeLabel(l10n, def.attrKey),
       valueType: def.valueType,
       initialValue: currentValue,
@@ -195,6 +270,7 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
       multiline: !_shortTextFields.contains(def.attrKey),
       options: EnumOptions.optionsFor(def.attrKey),
       optionLabel: (v) => enumOptionLabel(l10n, def.attrKey, v),
+      suffixIcon: lockButton,
       onChanged: (value) {
         setState(() {
           _edits[def.attrKey] = value;
@@ -204,15 +280,6 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
           widget.database.renameEntity(widget.entityId, value);
         }
       },
-    );
-
-    if (!isIdentityField) return field;
-
-    return LockableField(
-      locked: locked,
-      tooltip: locked ? l10n.unlockToEdit : l10n.lockEditing,
-      onToggle: () => setState(() => _identityLocks[def.attrKey] = !locked),
-      child: field,
     );
   }
 
@@ -228,7 +295,7 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
 
     return PowersGrid(
       mainPower: valueOf('main_power'),
-      stonePowers: [for (var i = 1; i <= 8; i++) valueOf('stone_${i}_power')],
+      stonePowers: [for (var i = 1; i <= 9; i++) valueOf('stone_${i}_power')],
       onMainPowerChanged: (v) => setValue('main_power', v),
       onStonePowerChanged: (index, v) => setValue('stone_${index + 1}_power', v),
     );

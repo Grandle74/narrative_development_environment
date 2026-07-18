@@ -269,7 +269,7 @@ abstract class AppLocalizations {
   /// No description provided for @attrCurrentArc.
   ///
   /// In en, this message translates to:
-  /// **'Current Arc'**
+  /// **'Arc'**
   String get attrCurrentArc;
 
   /// No description provided for @attrRole.

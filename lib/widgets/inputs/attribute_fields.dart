@@ -30,6 +30,7 @@ class AttributeField extends StatelessWidget {
     this.numberMax,
     this.database,
     this.targetEntityType,
+    this.suffixIcon,
   });
 
   final String label;
@@ -51,6 +52,12 @@ class AttributeField extends StatelessWidget {
   final AppDatabase? database;
   final String? targetEntityType;
 
+  /// Optional widget (e.g. a lock icon button) injected into the
+  /// InputDecoration suffix so it lives visually inside the field border.
+  /// Not forwarded to boolean or tag_list fields (they manage their own
+  /// suffix independently).
+  final Widget? suffixIcon;
+
   @override
   Widget build(BuildContext context) {
     switch (valueType) {
@@ -69,6 +76,7 @@ class AttributeField extends StatelessWidget {
           min: numberMin,
           max: numberMax,
           onChanged: onChanged,
+          suffixIcon: suffixIcon,
         );
       case 'enum':
         return EnumAttributeField(
@@ -78,6 +86,7 @@ class AttributeField extends StatelessWidget {
           initialValue: initialValue,
           enabled: enabled,
           onChanged: onChanged,
+          suffixIcon: suffixIcon,
         );
       case 'date':
         return DateAttributeField(
@@ -85,8 +94,11 @@ class AttributeField extends StatelessWidget {
           initialValue: initialValue,
           enabled: enabled,
           onChanged: onChanged,
+          suffixIcon: suffixIcon,
         );
       case 'tag_list':
+        // TagListAttributeField manages its own internal lock — suffixIcon
+        // is intentionally not forwarded here.
         return TagListAttributeField(
           label: label,
           initialValue: initialValue,
@@ -113,6 +125,7 @@ class AttributeField extends StatelessWidget {
           enabled: enabled,
           multiline: multiline,
           onChanged: onChanged,
+          suffixIcon: suffixIcon,
         );
       case 'text':
       default:
@@ -122,6 +135,7 @@ class AttributeField extends StatelessWidget {
           enabled: enabled,
           multiline: multiline,
           onChanged: onChanged,
+          suffixIcon: suffixIcon,
         );
     }
   }
@@ -135,6 +149,7 @@ class TextAttributeField extends StatefulWidget {
     required this.onChanged,
     this.enabled = true,
     this.multiline = false,
+    this.suffixIcon,
   });
 
   final String label;
@@ -142,6 +157,7 @@ class TextAttributeField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final bool enabled;
   final bool multiline;
+  final Widget? suffixIcon;
 
   @override
   State<TextAttributeField> createState() => _TextAttributeFieldState();
@@ -164,7 +180,10 @@ class _TextAttributeFieldState extends State<TextAttributeField> {
       enabled: widget.enabled,
       minLines: 1,
       maxLines: widget.multiline ? 5 : 1,
-      decoration: InputDecoration(labelText: widget.label),
+      decoration: InputDecoration(
+        labelText: widget.label,
+        suffixIcon: widget.suffixIcon,
+      ),
       onChanged: widget.onChanged,
     );
   }
@@ -216,6 +235,7 @@ class NumberAttributeField extends StatefulWidget {
     this.enabled = true,
     this.min,
     this.max,
+    this.suffixIcon,
   });
 
   final String label;
@@ -224,6 +244,7 @@ class NumberAttributeField extends StatefulWidget {
   final bool enabled;
   final double? min;
   final double? max;
+  final Widget? suffixIcon;
 
   @override
   State<NumberAttributeField> createState() => _NumberAttributeFieldState();
@@ -269,7 +290,10 @@ class _NumberAttributeFieldState extends State<NumberAttributeField> {
       enabled: widget.enabled,
       keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^-?\d*\.?\d*'))],
-      decoration: InputDecoration(labelText: widget.label),
+      decoration: InputDecoration(
+        labelText: widget.label,
+        suffixIcon: widget.suffixIcon,
+      ),
       onChanged: widget.onChanged,
     );
   }
@@ -284,6 +308,7 @@ class EnumAttributeField extends StatelessWidget {
     required this.initialValue,
     required this.onChanged,
     this.enabled = true,
+    this.suffixIcon,
   });
 
   final String label;
@@ -292,6 +317,7 @@ class EnumAttributeField extends StatelessWidget {
   final String? initialValue;
   final ValueChanged<String> onChanged;
   final bool enabled;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -300,7 +326,11 @@ class EnumAttributeField extends StatelessWidget {
         : null;
 
     return InputDecorator(
-      decoration: InputDecoration(labelText: label, enabled: enabled),
+      decoration: InputDecoration(
+        labelText: label,
+        enabled: enabled,
+        suffixIcon: suffixIcon,
+      ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           isExpanded: true,
@@ -328,12 +358,14 @@ class DateAttributeField extends StatelessWidget {
     required this.initialValue,
     required this.onChanged,
     this.enabled = true,
+    this.suffixIcon,
   });
 
   final String label;
   final String? initialValue;
   final ValueChanged<String> onChanged;
   final bool enabled;
+  final Widget? suffixIcon;
 
   DateTime? get _parsed {
     if (initialValue == null || initialValue!.isEmpty) return null;
@@ -345,6 +377,16 @@ class DateAttributeField extends StatelessWidget {
     final locale = Localizations.localeOf(context).languageCode;
     final date = _parsed;
     final display = date == null ? '—' : DateFormat.yMMMd(locale).format(date);
+
+    // When a lock icon is provided alongside the calendar icon, wrap both
+    // in a minimal Row so they sit side-by-side inside the suffix slot.
+    final calendarIcon = const Icon(Icons.calendar_today_outlined, size: 18);
+    final combinedSuffix = suffixIcon != null
+        ? Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [calendarIcon, suffixIcon!],
+          )
+        : calendarIcon;
 
     return InkWell(
       borderRadius: BorderRadius.circular(8),
@@ -365,7 +407,7 @@ class DateAttributeField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           enabled: enabled,
-          suffixIcon: const Icon(Icons.calendar_today_outlined, size: 18),
+          suffixIcon: combinedSuffix,
         ),
         child: Text(display),
       ),

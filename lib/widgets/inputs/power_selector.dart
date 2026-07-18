@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/nature_powers.dart';
 import '../../l10n/generated/app_localizations.dart';
 
-const List<String> _stoneNatureIds = ['fire', 'ice', 'mist', 'earth', 'water', 'air', 'electro', 'plant'];
+const List<String> _stoneNatureIds = ['fire', 'ice', 'mist', 'earth', 'water', 'air', 'electro', 'plant', 'dark'];
 
 /// One big "main power" button plus 8 small stone slots. Each slot is
 /// fixed to a single nature and toggles between that nature and none.
@@ -154,9 +154,9 @@ class PowersGrid extends StatelessWidget {
                 context,
                 size: 48,
                 value: stonePowers[i],
-                tooltip: stonePowers[i] == _stoneNatureIds[i]
-                    ? naturePowerLabel(l10n, _stoneNatureIds[i])
-                    : l10n.powerNone,
+                // Always show the nature name — toggled or not — so the
+                // user knows what each slot does before activating it.
+                tooltip: naturePowerLabel(l10n, _stoneNatureIds[i]),
                 onTap: () {
                   final nextValue = stonePowers[i] == _stoneNatureIds[i] ? '' : _stoneNatureIds[i];
                   onStonePowerChanged(i, nextValue);

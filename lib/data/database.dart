@@ -73,7 +73,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -181,6 +181,14 @@ class AppDatabase extends _$AppDatabase {
                   _attributeDefinitionCompanion(
                       'first_appearance_chapter', 'character', 'number', false, 'narrative'),
                 ]));
+          }
+          if (from < 6) {
+            // Ensure these are deleted even if v5 migration was skipped or
+            // schema was already at 5 when they were pulled in.
+            await (delete(attributeDefinitions)
+                  ..where((a) => a.attrKey.isIn(['current_location', 'first_appearance_page', 'first_appearance_chapter']))
+                )
+                .go();
           }
         },
       );
