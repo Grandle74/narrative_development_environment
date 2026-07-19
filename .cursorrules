@@ -1,0 +1,16 @@
+# AI Agent Instructions for narrative_development_environment
+
+You are an AI assistant working on this project. 
+To ensure you do not break existing reviewed changes, do not mess with working features, and follow the project design guidelines, you MUST read the following file before making any changes:
+
+👉 [AI_RULES.md](file:///home/grandle/Projects/narrative_development_environment/AI_RULES.md)
+
+## Critical Workflow Rules
+1. **Read `AI_RULES.md` First**: This file acts as the repository structure map, containing the architecture overview, rules, and a growable "Implementation History & Decisions Log".
+2. **Do Not Modify Locked Code**: Any implementation or file marked as `[LOCKED / REVIEWED]` in the log inside `AI_RULES.md` must NOT be deleted, reverted, or modified unless the user explicitly requests changes to that specific feature.
+3. **Update the History Log**: Upon successfully implementing a new feature, database migration, or completing a task, you MUST update the history log at the bottom of `AI_RULES.md` with:
+   - Date / Version
+   - Task/Feature Description
+   - Impacted Files / Modules
+   - Key Architectural & Design Decisions
+   - Mark it as `[LOCKED / REVIEWED]` (or `[PENDING REVIEW]` if waiting for confirmation)
