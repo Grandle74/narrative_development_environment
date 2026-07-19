@@ -91,7 +91,8 @@ class _NationalityPickerFieldState extends State<NationalityPickerField> {
     };
     final code = map[countryName];
     if (code == null) return '🏳️';
-    if (code.characters.length > 2) return code; // Used for custom emojis like The Island
+    // If the value contains any non-ASCII character it's already an emoji, not an ISO code.
+    if (code.runes.any((r) => r > 127)) return code;
     return _countryCodeToEmoji(code);
   }
 

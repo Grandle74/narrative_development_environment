@@ -83,5 +83,6 @@
   "undo": "تراجع",
   "removedTag": "تم الحذف",
   "unlockToEdit": "افتح القفل للتعديل",
-  "lockEditing": "قفل"
+  "lockEditing": "قفل",
+  "lockAllFieldsToSave": "أغلق جميع الحقول للحفظ"
 }

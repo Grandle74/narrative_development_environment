@@ -553,6 +553,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Lock'**
   String get lockEditing;
+
+  /// No description provided for @lockAllFieldsToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock all fields to save'**
+  String get lockAllFieldsToSave;
 }
 
 class _AppLocalizationsDelegate

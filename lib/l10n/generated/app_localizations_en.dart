@@ -235,4 +235,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lockEditing => 'Lock';
+
+  @override
+  String get lockAllFieldsToSave => 'Lock all fields to save';
 }

@@ -235,4 +235,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get lockEditing => 'قفل';
+
+  @override
+  String get lockAllFieldsToSave => 'أغلق جميع الحقول للحفظ';
 }

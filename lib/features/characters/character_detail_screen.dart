@@ -57,6 +57,16 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   bool _firstAppearanceLocked = true;
   bool _saving = false;
 
+  /// Returns true if any lockable field is currently unlocked.
+  /// Saving is blocked while this is true to prevent accidental edits.
+  bool get _hasUnlockedLockableFields {
+    // First-appearance fields are locked by default (true = locked).
+    if (!_firstAppearanceLocked) return true;
+    // Identity fields are locked by default; unlocked when the user toggled them.
+    // _identityLocks[key] == true means the user unlocked that field.
+    return _identityLocks.values.any((unlocked) => unlocked);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -159,17 +169,25 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
         future: _future,
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const SizedBox.shrink();
-          return FloatingActionButton.extended(
-            onPressed: _saving ? null : () => _save(snapshot.data!),
+          final blocked = _hasUnlockedLockableFields;
+          final button = FloatingActionButton.extended(
+            onPressed: (_saving || blocked) ? null : () => _save(snapshot.data!),
             icon: _saving
                 ? const SizedBox(
                     width: 16,
                     height: 16,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.check),
-            label: Text(l10n.save),
+                : Icon(blocked ? Icons.lock_open : Icons.check),
+            label: Text(blocked ? l10n.lockAllFieldsToSave : l10n.save),
           );
+          if (blocked) {
+            return Tooltip(
+              message: l10n.lockAllFieldsToSave,
+              child: button,
+            );
+          }
+          return button;
         },
       ),
     );

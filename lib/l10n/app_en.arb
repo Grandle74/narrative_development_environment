@@ -83,5 +83,6 @@
   "undo": "Undo",
   "removedTag": "Removed",
   "unlockToEdit": "Unlock to edit",
-  "lockEditing": "Lock"
+  "lockEditing": "Lock",
+  "lockAllFieldsToSave": "Lock all fields to save"
 }
