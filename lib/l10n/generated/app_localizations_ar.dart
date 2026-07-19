@@ -93,7 +93,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get attrNationality => 'الجنسية';
 
   @override
-  String get attrCurrentArc => 'القوس';
+  String get attrParticipatedArcs => 'الأقواس المشارك بها';
 
   @override
   String get attrRole => 'الدور';

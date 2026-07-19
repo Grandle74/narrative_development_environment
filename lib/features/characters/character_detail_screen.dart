@@ -25,7 +25,7 @@ const List<String> _sectionOrder = [
 /// section is rendered separately by PowersGrid and doesn't use this.
 const List<String> _fieldOrder = [
   'name', 'alias', 'species', 'birth', 'nationality',
-  'current_arc', 'role', 'affiliation',
+  'participated_arcs', 'role', 'affiliation',
   'production_status', 'narrative_purpose',
   'first_appearance_volume', 'first_appearance_chapter',
   'core_belief', 'core_desire', 'core_fear', 'core_conflict',
@@ -54,6 +54,7 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   late Future<_FormData> _future;
   final Map<String, String> _edits = {};
   final Map<String, bool> _identityLocks = {};
+  bool _firstAppearanceLocked = true;
   bool _saving = false;
 
   @override
@@ -192,7 +193,7 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
       }
     }
 
-    // Add all fields leading up to where the first appearance fields belong
+    // Add all normal fields
     for (final def in normalDefs) {
       widgets.add(Padding(
         padding: const EdgeInsets.only(bottom: 12),
@@ -200,8 +201,10 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
       ));
     }
 
-    // Add side-by-side first appearance if both are present
+    // Add side-by-side first appearance with a single external lock button
     if (volDef != null || chapDef != null) {
+      final locked = _firstAppearanceLocked;
+
       widgets.add(Padding(
         padding: const EdgeInsets.only(bottom: 12),
         child: Row(
@@ -210,23 +213,48 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
             if (volDef != null)
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(right: chapDef != null ? 8 : 0),
-                  child: _buildField(l10n, data, volDef),
+                  padding: EdgeInsets.only(right: chapDef != null ? 4 : 0),
+                  child: _buildFirstAppearanceField(l10n, data, volDef, enabled: !locked),
                 ),
               ),
             if (chapDef != null)
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(left: volDef != null ? 8 : 0),
-                  child: _buildField(l10n, data, chapDef),
+                  padding: EdgeInsets.only(left: volDef != null ? 4 : 0),
+                  child: _buildFirstAppearanceField(l10n, data, chapDef, enabled: !locked),
                 ),
               ),
+            // External lock button — outside the field boxes
+            IconButton(
+              icon: Icon(locked ? Icons.lock_outline : Icons.lock_open, size: 18),
+              tooltip: locked ? l10n.unlockToEdit : l10n.lockEditing,
+              onPressed: () => setState(() => _firstAppearanceLocked = !locked),
+            ),
           ],
         ),
       ));
     }
 
     return widgets;
+  }
+
+  /// Builds a simple number field for first appearance (volume or chapter).
+  /// No suffix icon — the lock lives outside the row.
+  Widget _buildFirstAppearanceField(
+      AppLocalizations l10n, _FormData data, AttributeDefinition def,
+      {required bool enabled}) {
+    final currentFact = data.current[def.attrKey];
+    final currentValue = _edits[def.attrKey] ?? currentFact?.value;
+
+    return AttributeField(
+      key: ValueKey('${def.attrKey}_$enabled'),
+      label: attributeLabel(l10n, def.attrKey),
+      valueType: def.valueType,
+      initialValue: currentValue,
+      enabled: enabled,
+      multiline: false,
+      onChanged: (value) => setState(() => _edits[def.attrKey] = value),
+    );
   }
 
   Widget _buildField(AppLocalizations l10n, _FormData data, AttributeDefinition def) {
@@ -241,6 +269,11 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
     // Non-identity fields are enabled if they are mutable or have no value yet.
     final enabled = isIdentityField ? !locked : (def.mutable || currentFact == null);
 
+    // Lock button for identity fields that are NOT tag_list type.
+    // Tag list fields (like alias) have their own built-in internal lock
+    // mechanism inside TagListAttributeField — we must not override it
+    // or it breaks because the external lock controls `enabled` while
+    // the internal lock controls `_locked` / `canEdit`.
     Widget? lockButton;
     if (isIdentityField && def.valueType != 'tag_list') {
       lockButton = IconButton(

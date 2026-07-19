@@ -266,11 +266,11 @@ abstract class AppLocalizations {
   /// **'Nationality'**
   String get attrNationality;
 
-  /// No description provided for @attrCurrentArc.
+  /// No description provided for @attrParticipatedArcs.
   ///
   /// In en, this message translates to:
-  /// **'Arc'**
-  String get attrCurrentArc;
+  /// **'Participated Arcs'**
+  String get attrParticipatedArcs;
 
   /// No description provided for @attrRole.
   ///

@@ -93,7 +93,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attrNationality => 'Nationality';
 
   @override
-  String get attrCurrentArc => 'Arc';
+  String get attrParticipatedArcs => 'Participated Arcs';
 
   @override
   String get attrRole => 'Role';

@@ -23,7 +23,7 @@ List<AttributeDefinitionsCompanion> buildDefaultAttributeDefinitions() {
     _attributeDefinitionCompanion('main_power', 'character', 'enum', true, 'powers'),
     for (var i = 1; i <= 8; i++)
       _attributeDefinitionCompanion('stone_${i}_power', 'character', 'enum', true, 'powers'),
-    _attributeDefinitionCompanion('current_arc', 'character', 'tag_list', true, 'narrative'),
+    _attributeDefinitionCompanion('participated_arcs', 'character', 'tag_list', true, 'narrative'),
     _attributeDefinitionCompanion('role', 'character', 'tag_list', true, 'narrative'),
     _attributeDefinitionCompanion('affiliation', 'character', 'tag_list', true, 'narrative'),
     _attributeDefinitionCompanion('production_status', 'character', 'enum', true, 'narrative'),
@@ -73,7 +73,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -189,6 +189,48 @@ class AppDatabase extends _$AppDatabase {
                   ..where((a) => a.attrKey.isIn(['current_location', 'first_appearance_page', 'first_appearance_chapter']))
                 )
                 .go();
+          }
+          if (from < 7) {
+            // Rename current_arc to participated_arcs and force tag_list
+            await (update(attributeDefinitions)
+                  ..where((a) => a.attrKey.equals('current_arc')))
+                .write(const AttributeDefinitionsCompanion(
+              attrKey: Value('participated_arcs'),
+              valueType: Value('tag_list'),
+            ));
+            await (update(facts)
+                  ..where((f) => f.attribute.equals('current_arc')))
+                .write(const FactsCompanion(
+              attribute: Value('participated_arcs'),
+            ));
+
+            // Restore first_appearance_chapter (accidentally deleted in v6)
+            await batch((b) => b.insertAll(attributeDefinitions, [
+                  _attributeDefinitionCompanion(
+                      'first_appearance_chapter', 'character', 'number', false, 'narrative'),
+                ], mode: InsertMode.insertOrIgnore));
+
+            // Purge leftover location attributes
+            await (delete(attributeDefinitions)
+                  ..where((a) => a.attrKey.isIn(['location', 'current_location'])))
+                .go();
+          }
+          if (from < 8) {
+            // Migrate any leftover 'arc' facts into 'participated_arcs'
+            await (update(facts)
+                  ..where((f) => f.attribute.equals('arc')))
+                .write(const FactsCompanion(
+              attribute: Value('participated_arcs'),
+            ));
+            // Delete the orphaned 'arc' attribute definition
+            await (delete(attributeDefinitions)
+                  ..where((a) => a.attrKey.equals('arc')))
+                .go();
+            // Ensure participated_arcs exists with the right type
+            await batch((b) => b.insertAll(attributeDefinitions, [
+                  _attributeDefinitionCompanion(
+                      'participated_arcs', 'character', 'tag_list', true, 'narrative'),
+                ], mode: InsertMode.insertOrReplace));
           }
         },
       );

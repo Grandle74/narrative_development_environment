@@ -32,7 +32,7 @@
   "attrSpecies": "Species",
   "attrBirth": "Birth",
   "attrNationality": "Nationality",
-  "attrCurrentArc": "Arc",
+  "attrParticipatedArcs": "Participated Arcs",
   "attrRole": "Role",
   "attrAffiliation": "Affiliation",
   "attrProductionStatus": "Production Status",

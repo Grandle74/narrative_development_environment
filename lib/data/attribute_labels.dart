@@ -18,8 +18,8 @@ String attributeLabel(AppLocalizations l10n, String attrKey) {
       return l10n.attrBirth;
     case 'nationality':
       return l10n.attrNationality;
-    case 'current_arc':
-      return l10n.attrCurrentArc;
+    case 'participated_arcs':
+      return l10n.attrParticipatedArcs;
     case 'role':
       return l10n.attrRole;
     case 'affiliation':
