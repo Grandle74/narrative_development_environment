@@ -13,13 +13,12 @@ enum DarkVariant { oled, gray }
 class AppTheme {
   AppTheme._();
 
-  static const Color _accent = Color(0xFF0A84FF);
   static const double _radius = 14;
 
-  static ThemeData get light => _build(Brightness.light);
+  static ThemeData light(Color seedColor) => _build(Brightness.light, seedColor);
 
-  static ThemeData dark(DarkVariant variant) {
-    final base = _build(Brightness.dark);
+  static ThemeData dark(DarkVariant variant, Color seedColor) {
+    final base = _build(Brightness.dark, seedColor);
     if (variant == DarkVariant.gray) return base;
 
     // OLED: push the neutral-dark surfaces down to true black, keep
@@ -39,9 +38,9 @@ class AppTheme {
     );
   }
 
-  static ThemeData _build(Brightness brightness) {
+  static ThemeData _build(Brightness brightness, Color seedColor) {
     final scheme = ColorScheme.fromSeed(
-      seedColor: _accent,
+      seedColor: seedColor,
       brightness: brightness,
       dynamicSchemeVariant: DynamicSchemeVariant.neutral,
     );

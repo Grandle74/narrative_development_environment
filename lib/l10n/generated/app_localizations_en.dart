@@ -42,7 +42,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appearanceTitle => 'Appearance';
 
   @override
-  String get themeSystem => 'System default';
+  String get themeSystem => 'System Default';
 
   @override
   String get themeLight => 'Light';
@@ -51,13 +51,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeDark => 'Dark';
 
   @override
-  String get darkBackgroundTitle => 'Dark background';
+  String get darkBackgroundTitle => 'Dark Background';
 
   @override
-  String get darkVariantGray => 'Dark Gray';
+  String get darkVariantGray => 'Gray';
 
   @override
-  String get darkVariantOled => 'OLED (pure black)';
+  String get darkVariantOled => 'True Black (OLED)';
+
+  @override
+  String get languageTitle => 'Language';
+
+  @override
+  String get languageSystem => 'System Default';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageArabic => 'العربية';
+
+  @override
+  String get themeColorTitle => 'Theme Color';
+
+  @override
+  String get customColor => 'Custom';
+
+  @override
+  String get saveColor => 'Save Color';
+
+  @override
+  String get savedColorsTitle => 'Saved Colors';
 
   @override
   String get sectionIdentity => 'Identity';

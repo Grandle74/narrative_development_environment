@@ -54,10 +54,34 @@ class AppLocalizationsAr extends AppLocalizations {
   String get darkBackgroundTitle => 'الخلفية الداكنة';
 
   @override
-  String get darkVariantGray => 'رمادي داكن';
+  String get darkVariantGray => 'رمادي';
 
   @override
-  String get darkVariantOled => 'OLED (أسود خالص)';
+  String get darkVariantOled => 'أسود حقيقي (OLED)';
+
+  @override
+  String get languageTitle => 'اللغة';
+
+  @override
+  String get languageSystem => 'افتراضي النظام';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageArabic => 'العربية';
+
+  @override
+  String get themeColorTitle => 'لون الواجهة';
+
+  @override
+  String get customColor => 'مخصص';
+
+  @override
+  String get saveColor => 'حفظ اللون';
+
+  @override
+  String get savedColorsTitle => 'الألوان المحفوظة';
 
   @override
   String get sectionIdentity => 'الهوية';

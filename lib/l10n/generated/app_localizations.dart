@@ -167,7 +167,7 @@ abstract class AppLocalizations {
   /// No description provided for @themeSystem.
   ///
   /// In en, this message translates to:
-  /// **'System default'**
+  /// **'System Default'**
   String get themeSystem;
 
   /// No description provided for @themeLight.
@@ -185,20 +185,68 @@ abstract class AppLocalizations {
   /// No description provided for @darkBackgroundTitle.
   ///
   /// In en, this message translates to:
-  /// **'Dark background'**
+  /// **'Dark Background'**
   String get darkBackgroundTitle;
 
   /// No description provided for @darkVariantGray.
   ///
   /// In en, this message translates to:
-  /// **'Dark Gray'**
+  /// **'Gray'**
   String get darkVariantGray;
 
   /// No description provided for @darkVariantOled.
   ///
   /// In en, this message translates to:
-  /// **'OLED (pure black)'**
+  /// **'True Black (OLED)'**
   String get darkVariantOled;
+
+  /// No description provided for @languageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageTitle;
+
+  /// No description provided for @languageSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System Default'**
+  String get languageSystem;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @languageArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get languageArabic;
+
+  /// No description provided for @themeColorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme Color'**
+  String get themeColorTitle;
+
+  /// No description provided for @customColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get customColor;
+
+  /// No description provided for @saveColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Color'**
+  String get saveColor;
+
+  /// No description provided for @savedColorsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved Colors'**
+  String get savedColorsTitle;
 
   /// No description provided for @sectionIdentity.
   ///

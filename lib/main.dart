@@ -43,12 +43,13 @@ class _NdeAppState extends State<NdeApp> {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+          locale: widget.themeController.locale,
           supportedLocales: const [
             Locale('en'),
             Locale('ar'),
           ],
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark(widget.themeController.darkVariant),
+          theme: AppTheme.light(widget.themeController.seedColor),
+          darkTheme: AppTheme.dark(widget.themeController.darkVariant, widget.themeController.seedColor),
           themeMode: widget.themeController.mode,
           home: CharacterListScreen(
             database: widget.database,
