@@ -97,13 +97,12 @@ class AttributeField extends StatelessWidget {
           suffixIcon: suffixIcon,
         );
       case 'tag_list':
-        // TagListAttributeField manages its own internal lock — suffixIcon
-        // is intentionally not forwarded here.
         return TagListAttributeField(
           label: label,
           initialValue: initialValue,
           enabled: enabled,
           onChanged: onChanged,
+          suffixIcon: suffixIcon,
         );
       case 'entity_ref':
         if (database != null && targetEntityType != null) {
@@ -427,12 +426,16 @@ class TagListAttributeField extends StatefulWidget {
     required this.initialValue,
     required this.onChanged,
     this.enabled = true,
+    this.suffixIcon,
   });
 
   final String label;
   final String? initialValue;
   final ValueChanged<String> onChanged;
   final bool enabled;
+  /// When provided, this icon replaces the internal lock and `enabled`
+  /// alone controls editability (same pattern as Name / Birth).
+  final Widget? suffixIcon;
 
   @override
   State<TagListAttributeField> createState() => _TagListAttributeFieldState();
@@ -498,19 +501,23 @@ class _TagListAttributeFieldState extends State<TagListAttributeField> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final scheme = Theme.of(context).colorScheme;
-    final canEdit = widget.enabled && !_locked;
+    // When an external suffixIcon is provided (identity lock from parent),
+    // editability is controlled purely by widget.enabled — same as Name/Birth.
+    // When no external suffixIcon, use the internal lock mechanism.
+    final bool hasExternalLock = widget.suffixIcon != null;
+    final canEdit = hasExternalLock ? widget.enabled : (widget.enabled && !_locked);
 
     return InputDecorator(
       decoration: InputDecoration(
         labelText: widget.label,
         enabled: widget.enabled,
-        suffixIcon: widget.enabled
+        suffixIcon: widget.suffixIcon ?? (widget.enabled
             ? IconButton(
                 tooltip: _locked ? l10n.unlockToEdit : l10n.lockEditing,
                 icon: Icon(_locked ? Icons.lock_outline : Icons.lock_open, size: 18),
                 onPressed: () => setState(() => _locked = !_locked),
               )
-            : null,
+            : null),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

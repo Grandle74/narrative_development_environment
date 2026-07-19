@@ -269,13 +269,8 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
     // Non-identity fields are enabled if they are mutable or have no value yet.
     final enabled = isIdentityField ? !locked : (def.mutable || currentFact == null);
 
-    // Lock button for identity fields that are NOT tag_list type.
-    // Tag list fields (like alias) have their own built-in internal lock
-    // mechanism inside TagListAttributeField — we must not override it
-    // or it breaks because the external lock controls `enabled` while
-    // the internal lock controls `_locked` / `canEdit`.
     Widget? lockButton;
-    if (isIdentityField && def.valueType != 'tag_list') {
+    if (isIdentityField) {
       lockButton = IconButton(
         icon: Icon(locked ? Icons.lock_outline : Icons.lock_open, size: 18),
         tooltip: locked ? l10n.unlockToEdit : l10n.lockEditing,
