@@ -19,6 +19,9 @@ const List<String> _sectionOrder = [
   'expression',
 ];
 
+/// Above this width identity and powers are shown side-by-side.
+const double _wideBreakpoint = 720;
+
 /// Field display order within each section. Anything not listed here
 /// (a future attribute added to the registry) still renders — it just
 /// falls to the end of its section instead of erroring. The 'powers'
@@ -142,26 +145,37 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
             ...bySection.keys.where((s) => !_sectionOrder.contains(s)),
           ];
 
-          return ListView(
-            padding: const EdgeInsets.only(bottom: 96),
-            children: [
-              for (final section in sections)
-                if (bySection[section] != null)
-                  ExpansionTile(
-                    title: Text(sectionLabel(l10n, section)),
-                    initiallyExpanded: section == 'identity' || section == 'powers',
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                        child: section == 'powers'
-                            ? _buildPowersGrid(data)
-                            : Column(
-                                children: _buildSectionFields(l10n, data, bySection[section]!),
-                              ),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final isWide = constraints.maxWidth >= _wideBreakpoint;
+              if (isWide) {
+                return _buildWideBody(l10n, data, bySection, sections);
+              }
+              // ── Narrow / mobile layout (unchanged) ──
+              return ListView(
+                padding: const EdgeInsets.only(bottom: 96),
+                children: [
+                  for (final section in sections)
+                    if (bySection[section] != null)
+                      ExpansionTile(
+                        title: Text(sectionLabel(l10n, section)),
+                        initiallyExpanded:
+                            section == 'identity' || section == 'powers',
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                            child: section == 'powers'
+                                ? _buildPowersGrid(data)
+                                : Column(
+                                    children: _buildSectionFields(
+                                        l10n, data, bySection[section]!),
+                                  ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-            ],
+                ],
+              );
+            },
           );
         },
       ),
@@ -189,6 +203,99 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
           }
           return button;
         },
+      ),
+    );
+  }
+
+  // ─── Wide-screen body ────────────────────────────────────────────────────
+  //
+  // Identity (left) | Powers (right) at the top, all other sections below.
+
+  Widget _buildWideBody(
+    AppLocalizations l10n,
+    _FormData data,
+    Map<String, List<AttributeDefinition>> bySection,
+    List<String> sections,
+  ) {
+    final remainingSections = sections
+        .where((s) => s != 'identity' && s != 'powers' && bySection[s] != null)
+        .toList();
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 96),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // ── Top row: identity | powers, same height ──
+          // IntrinsicHeight measures the taller column (identity) then
+          // constrains both to that height via CrossAxisAlignment.stretch.
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Left: identity section (ExpansionTile, grows to content)
+                Expanded(
+                  child: ExpansionTile(
+                    title: Text(sectionLabel(l10n, 'identity')),
+                    initiallyExpanded: true,
+                    children: [
+                      if (bySection['identity'] != null)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                          child: Column(
+                            children: _buildSectionFields(
+                                l10n, data, bySection['identity']!),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                // Right: powers — Column with Expanded so PowersGrid fills
+                // the same height as identity rather than shrinking.
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Header row matching ExpansionTile's visual style
+                      ListTile(
+                        title: Text(
+                          sectionLabel(l10n, 'powers'),
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        trailing: Icon(
+                          Icons.expand_less,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      // Expanded forces PowersGrid to fill the remaining height
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                          child: _buildPowersGrid(data),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // ── Remaining sections below, full width ──
+          for (final section in remainingSections)
+            ExpansionTile(
+              title: Text(sectionLabel(l10n, section)),
+              initiallyExpanded: false,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                  child: Column(
+                    children:
+                        _buildSectionFields(l10n, data, bySection[section]!),
+                  ),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }
